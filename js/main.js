@@ -2,6 +2,16 @@
 
 const RIGHT_ARROW = 39;
 const LEFT_ARROW = 37;
+const ScreenOrder = {
+  GREETING: 0,
+  RULES: 1,
+  GAME_1: 2,
+  GAME_2: 3,
+  GAME_3: 4,
+  STATS: 5,
+  MODAL_ERROR: 6,
+  MODAL_CONFIRM: 7,
+};
 const arrows = document.createElement(`div`);
 document.querySelector(`body`).appendChild(arrows).innerHTML = `<div class="arrows__wrap">
   <style>
@@ -54,4 +64,4 @@ document.querySelector(`.arrows__btn + .arrows__btn`).addEventListener(`click`, 
   checkAndShowFollowingSlide(orderNumberOfNextSlide + 1);
 });
 
-checkAndShowFollowingSlide(1);
+checkAndShowFollowingSlide(ScreenOrder.RULES);
