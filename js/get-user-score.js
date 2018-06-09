@@ -1,45 +1,3 @@
-export const userGameInformation = [
-  {
-    answer: true,
-    time: 2
-  },
-  {
-    answer: true,
-    time: 12
-  },
-  {
-    answer: true,
-    time: 22
-  },
-  {
-    answer: true,
-    time: 11
-  },
-  {
-    answer: true,
-    time: 16
-  },
-  {
-    answer: true,
-    time: 24
-  },
-  {
-    answer: true,
-    time: 26
-  },
-  {
-    answer: true,
-    time: 13
-  },
-  {
-    answer: true,
-    time: 5
-  },
-  {
-    answer: true,
-    time: 1
-  },
-];
 export const getUserResult = (answers, lives) => {
   const LIVES_LIMIT = 4;
   const LIVE_BONUS = 50;
@@ -61,6 +19,7 @@ export const getUserResult = (answers, lives) => {
   if (Array.isArray(answers) !== true) {
     throw new Error(`answers must be an array`);
   }
+
   if (answers.length < 10 || lives === 0) {
     return -1;
   }
