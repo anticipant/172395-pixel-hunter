@@ -4,9 +4,9 @@ export const renderScreen = (template) => {
   wrapper.innerHTML = template.trim();
   return wrapper;
 };
-const mainElement = document.querySelector(`body`);
 
 export const changeScreen = (element) => {
+  const mainElement = document.querySelector(`body`);
   mainElement.innerHTML = ``;
   mainElement.appendChild(element);
 };
