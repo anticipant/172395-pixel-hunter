@@ -1,5 +1,5 @@
 import {games, headerState} from './data.js';
-import statsScreenElement from './stats-module.js';
+import showStatisticScreen from './stats-module.js';
 import {renderScreen, changeScreen, getElementFromTemplate} from './util.js';
 
 let responseLimit;
@@ -86,7 +86,7 @@ function refreshData(isFirstGame, statsArray, lives) {
 function isFinished(lives) {
   if (!lives) {
     console.log(`GAME OVER`);
-    changeScreen(statsScreenElement);
+    showStatisticScreen(gameAnswers, gameState.lives);
   }
 }
 function hangListener() {
@@ -134,7 +134,7 @@ function checkAnswer(clickedInput) {
     } else {
       if (gamesArray.length === 0) {
         console.log(`WIIIIIIIIIN`);
-        changeScreen(statsScreenElement);
+        showStatisticScreen(gameAnswers, gameState.lives);
       } else {
         console.log(`NEXT GAME`);
         showFirstGame(false, gameAnswers, gameState);

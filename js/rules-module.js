@@ -1,4 +1,4 @@
-import {renderScreen, changeScreen} from './util.js';
+import {renderScreen} from './util.js';
 import showFirstGame from './game-1-module.js';
 
 function checkInputValue(targetInput) {
