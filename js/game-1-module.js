@@ -85,7 +85,6 @@ function refreshData(isFirstGame, statsArray, lives) {
 }
 function isFinished(lives) {
   if (!lives) {
-    console.log(`GAME OVER`);
     showStatisticScreen(gameAnswers, gameState.lives);
   }
 }
@@ -119,24 +118,19 @@ function checkAnswer(clickedInput) {
     answerValue = clickedInput.value;
   }
   if (currentGame.questions[actualRoundKey].answers[answerKey] === answerValue) {
-    console.log(`Right ANSWER`);
     updateStats(true, 15);
   } else {
-    console.log(`FAIL`);
     updateStats(false, 14);
     reduceLive(gameState);
   }
 
   if (checkCountOfAnswers(clickedInput) === responseLimit && gameState.lives) {
     if (roundKeys.length) {
-      console.log(`next ROUND`);
       showNextRound();
     } else {
       if (gamesArray.length === 0) {
-        console.log(`WIIIIIIIIIN`);
         showStatisticScreen(gameAnswers, gameState.lives);
       } else {
-        console.log(`NEXT GAME`);
         showFirstGame(false, gameAnswers, gameState);
       }
     }
