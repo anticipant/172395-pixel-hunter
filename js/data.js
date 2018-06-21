@@ -5,10 +5,10 @@ export const headerState = {
 export const games = [
   {
     'response-limit': 2,
-    taskTitle: `Угадайте для каждого изображения фото или рисунок?`,
-    buttonsValue: [ `photo` , `paint`],
-    buttonsName: [ `Фото` , `Рисунок`],
-    questions: {
+    'taskTitle': `Угадайте для каждого изображения фото или рисунок?`,
+    'buttonsValue': [`photo`, `paint`],
+    'buttonsName': [`Фото`, `Рисунок`],
+    'questions': {
       'level-1': {
         imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`],
         answers: {
@@ -34,10 +34,10 @@ export const games = [
   },
   {
     'response-limit': 1,
-    taskTitle: `Угадай, фото или рисунок?`,
-    buttonsValue: [ `photo` , `paint`],
-    buttonsName: [ `Фото` , `Рисунок`],
-    questions: {
+    'taskTitle': `Угадай, фото или рисунок?`,
+    'buttonsValue': [`photo`, `paint`],
+    'buttonsName': [`Фото`, `Рисунок`],
+    'questions': {
       'level-1': {
         imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
         answers: {
@@ -54,8 +54,8 @@ export const games = [
   },
   {
     'response-limit': 1,
-    taskTitle: `Найдите рисунок среди изображений`,
-    questions: {
+    'taskTitle': `Найдите рисунок среди изображений`,
+    'questions': {
       'level-1': {
         imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`],
         answers: {

@@ -74,11 +74,13 @@ function refreshData(isFirstGame, statsArray, lives) {
     gameAnswers = statsArray;
   }
   getCurrentGame(gamesArray); // помешаю в currentGame текущую игру из скопированного массива игр
-  responseLimit = currentGame['response-limit'];
+  responseLimit = currentGame[`response-limit`];
   numberOfResponses = [];
   roundKeys = [];
   for (let key in currentGame.questions) {
-    roundKeys.push(key);
+    if (key) {
+      roundKeys.push(key);
+    }
   }
   setActualRoundKey();
   countOfImage = currentGame.questions[actualRoundKey].imagesPathArray.length;
@@ -171,7 +173,7 @@ const screenMarkup = (state, level, countOfQuestion) => {
         </label>
       </div>`).join(``)}
     </form>
-  </div>`
+  </div>`;
   } else if (countOfQuestion === 1) {
     return `
   <div class="game">
@@ -190,7 +192,7 @@ const screenMarkup = (state, level, countOfQuestion) => {
         </label>
       </div>`).join(``)}
     </form>
-  </div>`
+  </div>`;
   } else if (countOfQuestion === 3) {
     return `
   <div class="game">
@@ -201,8 +203,9 @@ const screenMarkup = (state, level, countOfQuestion) => {
             <img src="${it}" data-name="image${index + 1}" alt="Option 1" width="304" height="455">
           </div>`).join(``)}
       </form>
-   </div>`
+   </div>`;
   }
+  return null;
 };
 const statsMarkup = (answers) => `
   <div class="stats">

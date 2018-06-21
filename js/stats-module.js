@@ -7,9 +7,15 @@ const Bonus = {
   LIVE: 50
 };
 const userResult = (result, answers, lives) => {
-  const fastAnswers = answers.filter((answer) => {return answer.statsResult === `fast`}).length;
-  const slowAnswers = answers.filter((answer) => {return answer.statsResult === `slow`}).length;
-  const correctAnswers = answers.filter((answer) => {return answer.statsResult === `correct`}).length;
+  const fastAnswers = answers.filter((answer) => {
+    return answer.statsResult === `fast`;
+  }).length;
+  const slowAnswers = answers.filter((answer) => {
+    return answer.statsResult === `slow`;
+  }).length;
+  const correctAnswers = answers.filter((answer) => {
+    return answer.statsResult === `correct`;
+  }).length;
   if (result < 0) {
     return `<tr>
         <td class="result__number">1.</td>
@@ -22,7 +28,7 @@ const userResult = (result, answers, lives) => {
         </td>
         <td class="result__total"></td>
         <td class="result__total  result__total--final">fail</td>
-      </tr>`
+      </tr>`;
   }
   return `<tr>
         <td class="result__number">1.</td>
@@ -67,9 +73,9 @@ const userResult = (result, answers, lives) => {
       </tr>
       <tr>
         <td colspan="5" class="result__total  result__total--final">${result}</td>
-      </tr>`
+      </tr>`;
 };
-const statsScreenMarkup = (result, userResult) => `
+const statsScreenMarkup = (result, userResultMarkup) => `
 <header class="header">
     <div class="header__back">
       <button class="back">
@@ -81,7 +87,7 @@ const statsScreenMarkup = (result, userResult) => `
   <div class="result">
     <h1>${result < 0 ? `Поражение!` : `Победа!`}</h1>
     <table class="result__table">
-    ${userResult}
+    ${userResultMarkup}
     </table>
     <table class="result__table">
       <tr>
