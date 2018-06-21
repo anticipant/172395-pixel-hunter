@@ -27,8 +27,8 @@ function showNextRound() {
   gameBlock.replaceWith(newGameBlock);
   hangListener();
 }
-function checkCountOfAnswers(clickedInput) {
-  let clickedAnswer = clickedInput.getAttribute(`name`);
+function checkCountOfAnswers(clickedInputButton) {
+  let clickedAnswer = clickedInputButton.getAttribute(`name`);
 
   if (numberOfResponses.indexOf(clickedAnswer) < 0) {
     numberOfResponses.push(clickedAnswer);
@@ -59,6 +59,8 @@ function updateStats(answerResult, timeResult) {
   const newStats = getElementFromTemplate(statsMarkup(gameAswers));
   stats.replaceWith(newStats);
 }
+// для второй и последующих игр, обновлять/обнулять надо не все переменные
+// через if для первой и остальных игр
 function refreshData() {
   gameState = Object.assign({}, headerState);
   numberOfResponses = [];
@@ -85,9 +87,9 @@ function reduceLive(livesState) {
   updateNumberOfLives();
   isFinished(livesState.lives);
 }
-function checkAnswer(clickedInput) {
-  let questionName = clickedInput.getAttribute(`name`);
-  let questionValue = clickedInput.value;
+function checkAnswer(clickedInputButton) {
+  let questionName = clickedInputButton.getAttribute(`name`);
+  let questionValue = clickedInputButton.value;
 
   if (firstGame.questions[actualRoundKey].answers[questionName] === questionValue) {
     console.log(`Right ANSWER`);
@@ -98,11 +100,12 @@ function checkAnswer(clickedInput) {
     reduceLive(gameState);
   }
 
-  if (checkCountOfAnswers(clickedInput) === RESPONSE_LIMIT && gameState.live) {
+  if (checkCountOfAnswers(clickedInputButton) === RESPONSE_LIMIT && gameState.lives) {
     console.log(`next ROUND`);
     if (roundKeys.length) {
       showNextRound();
     } else {
+      // показывать не вторую, а следующую игру
       showSecondGame(gameAswers, gameState);
     }
   }
@@ -127,28 +130,18 @@ const gameOneScreenMarkup = (state, level) => `
   <div class="game">
     <p class="game__task">${state.taskTitle}</p>
     <form class="game__content">
-      <div class="game__option">
-        <img src="${state.questions[level].imagesPathArray[0]}" alt="Option 1" width="468" height="458">
+    ${state.questions[level].imagesPathArray.map((it, index) => `
+        <div class="game__option">
+        <img src="${it}" alt="Option ${index + 1}" width="468" height="458">
         <label class="game__answer game__answer--photo">
-          <input name="question1" type="radio" value="photo">
-          <span>Фото</span>
+          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[0]}">
+          <span>${state.buttonsName[0]}</span>
         </label>
         <label class="game__answer game__answer--paint">
-          <input name="question1" type="radio" value="paint">
-          <span>Рисунок</span>
+          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[1]}">
+          <span>${state.buttonsName[1]}</span>
         </label>
-      </div>
-      <div class="game__option">
-        <img src="${state.questions[level].imagesPathArray[1]}" alt="Option 2" width="468" height="458">
-        <label class="game__answer  game__answer--photo">
-          <input name="question2" type="radio" value="photo">
-          <span>Фото</span>
-        </label>
-        <label class="game__answer  game__answer--paint">
-          <input name="question2" type="radio" value="paint">
-          <span>Рисунок</span>
-        </label>
-      </div>
+      </div>`).join(``)}
     </form>
   </div>`;
 const statsMarkup = (answers) => `
@@ -172,5 +165,6 @@ const showFirstGame = () => {
 
   hangListener();
 };
-
+// В зависимости от длины массива с картинками, можно выбирать шаблон для игры
+// если заменять не экраны а только содержание самой игры, менять предеться меньше;
 export default showFirstGame;

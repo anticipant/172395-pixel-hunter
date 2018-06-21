@@ -129,15 +129,10 @@ const gameOneScreenMarkup = (state, level) => `
 <div class="game">
     <p class="game__task">${state.taskTitle}</p>
     <form class="game__content  game__content--triple">
-      <div class="game__option">
-        <img src="${state.questions[level].imagesPathArray[0]}" data-name="image1" alt="Option 1" width="304" height="455">
-      </div>
-      <div class="game__option  game__option--selected">
-        <img src="${state.questions[level].imagesPathArray[1]}" data-name="image2" alt="Option 1" width="304" height="455">
-      </div>
-      <div class="game__option">
-        <img src="${state.questions[level].imagesPathArray[2]}" data-name="image3" alt="Option 1" width="304" height="455">
-      </div>
+    ${state.questions[level].imagesPathArray.map((it, index) => `
+        <div class="game__option">
+          <img src="${it}" data-name="image${index}" alt="Option 1" width="304" height="455">
+        </div>`).join(``)}
     </form>
  </div>`;
 const statsMarkup = (answers) => `

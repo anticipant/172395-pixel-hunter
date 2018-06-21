@@ -98,7 +98,7 @@ function checkAnswer(clickedInput) {
     reduceLive(gameState);
   }
 
-  if (checkCountOfAnswers(clickedInput) === RESPONSE_LIMIT && gameState.live) {
+  if (checkCountOfAnswers(clickedInput) === RESPONSE_LIMIT && gameState.lives) {
     console.log(`next ROUND`);
     if (roundKeys.length) {
       showNextRound();
@@ -128,17 +128,18 @@ const gameOneScreenMarkup = (state, level) => `
 <div class="game">
     <p class="game__task">${state.taskTitle}</p>
     <form class="game__content  game__content--wide">
+    ${state.questions[level].imagesPathArray.map((it, index) => `
       <div class="game__option">
-        <img src="${state.questions[level].imagesPathArray}" alt="Option 1" width="705" height="455">
+        <img src="${state.questions[level].imagesPathArray}" alt="Option ${index + 1}" width="705" height="455">
         <label class="game__answer  game__answer--photo">
-          <input name="question1" type="radio" value="photo">
-          <span>Фото</span>
+          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[0]}">
+          <span>${state.buttonsName[0]}</span>
         </label>
         <label class="game__answer  game__answer--wide  game__answer--paint">
-          <input name="question1" type="radio" value="paint">
-          <span>Рисунок</span>
+          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[1]}">
+          <span>${state.buttonsName[1]}</span>
         </label>
-      </div>
+      </div>`).join(``)}
     </form>
   </div>`;
 const statsMarkup = (answers) => `
