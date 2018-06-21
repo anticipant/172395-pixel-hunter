@@ -36,7 +36,7 @@ rulesInput.addEventListener(`keyup`, (evt) => {
 const showScreenTrigger = rulesScreenElement.querySelector(`.rules__button`);
 showScreenTrigger.addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  showFirstGame();
+  showFirstGame(true);
 });
 
 export default rulesScreenElement;

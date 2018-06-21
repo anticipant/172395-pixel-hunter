@@ -1,21 +1,26 @@
-import {firstGame, headerState} from './data.js';
+import {games, headerState} from './data.js';
 import statsScreenElement from './stats-module.js';
 import {renderScreen, changeScreen, getElementFromTemplate} from './util.js';
-import showSecondGame from './game-2-module.js';
 
-const RESPONSE_LIMIT = 2;
+let responseLimit;
 const Limit = {
   LIVES: 3,
   TIME: 30,
   FAST_TIME: 10,
   SLOW_TIME: 20,
 };
+let gamesArray;
+let currentGame;
+let countOfImage;
 let gameState;
 let roundKeys;
 let actualRoundKey;
 let numberOfResponses = [];
-let gameAswers = [];
+let gameAnswers = [];
 
+function getCurrentGame(arrayOfGames) {
+  currentGame = arrayOfGames.shift();
+}
 function setActualRoundKey() {
   actualRoundKey = roundKeys.shift();
 }
@@ -23,7 +28,7 @@ function showNextRound() {
   numberOfResponses = [];
   setActualRoundKey();
   const gameBlock = document.querySelector(`.game`);
-  const newGameBlock = getElementFromTemplate(gameOneScreenMarkup(firstGame, actualRoundKey));
+  const newGameBlock = getElementFromTemplate(screenMarkup(currentGame, actualRoundKey, countOfImage));
   gameBlock.replaceWith(newGameBlock);
   hangListener();
 }
@@ -54,21 +59,29 @@ function updateStats(answerResult, timeResult) {
   } else {
     result = `wrong`;
   }
-  gameAswers.push({answer: answerResult, time: timeResult, statsResult: result});
+  gameAnswers.push({answer: answerResult, time: timeResult, statsResult: result});
   const stats = document.querySelector(`div.stats`);
-  const newStats = getElementFromTemplate(statsMarkup(gameAswers));
+  const newStats = getElementFromTemplate(statsMarkup(gameAnswers));
   stats.replaceWith(newStats);
 }
-// для второй и последующих игр, обновлять/обнулять надо не все переменные
-// через if для первой и остальных игр
-function refreshData() {
-  gameState = Object.assign({}, headerState);
+function refreshData(isFirstGame, statsArray, lives) {
+  if (isFirstGame) {
+    gamesArray = games.slice(); // скопировал массив игр
+    gameState = Object.assign({}, headerState);
+    gameAnswers = [];
+  } else {
+    gameState = Object.assign({}, lives);
+    gameAnswers = statsArray;
+  }
+  getCurrentGame(gamesArray); // помешаю в currentGame текущую игру из скопированного массива игр
+  responseLimit = currentGame['response-limit'];
   numberOfResponses = [];
   roundKeys = [];
-  gameAswers = [];
-  for (let key in firstGame.questions) {
+  for (let key in currentGame.questions) {
     roundKeys.push(key);
   }
+  setActualRoundKey();
+  countOfImage = currentGame.questions[actualRoundKey].imagesPathArray.length;
 }
 function isFinished(lives) {
   if (!lives) {
@@ -78,20 +91,34 @@ function isFinished(lives) {
 }
 function hangListener() {
   const showScreenTrigger = document.querySelector(`.game__content`);
-  showScreenTrigger.addEventListener(`change`, (evt) => {
-    checkAnswer(evt.target);
-  });
+  if (countOfImage === 3) {
+    showScreenTrigger.addEventListener(`click`, (evt) => {
+      if (evt.target.classList.contains(`game__option`)) {
+        checkAnswer(evt.target);
+      }
+    });
+  } else {
+    showScreenTrigger.addEventListener(`change`, (evt) => {
+      checkAnswer(evt.target);
+    });
+  }
 }
 function reduceLive(livesState) {
   livesState.lives = livesState.lives - 1;
   updateNumberOfLives();
   isFinished(livesState.lives);
 }
-function checkAnswer(clickedInputButton) {
-  let questionName = clickedInputButton.getAttribute(`name`);
-  let questionValue = clickedInputButton.value;
-
-  if (firstGame.questions[actualRoundKey].answers[questionName] === questionValue) {
+function checkAnswer(clickedInput) {
+  let answerValue;
+  let answerKey;
+  if (countOfImage === 3) {
+    answerKey = clickedInput.querySelector(`img`).getAttribute(`data-name`);
+    answerValue = `paint`;
+  } else {
+    answerKey = clickedInput.getAttribute(`name`);
+    answerValue = clickedInput.value;
+  }
+  if (currentGame.questions[actualRoundKey].answers[answerKey] === answerValue) {
     console.log(`Right ANSWER`);
     updateStats(true, 15);
   } else {
@@ -100,13 +127,18 @@ function checkAnswer(clickedInputButton) {
     reduceLive(gameState);
   }
 
-  if (checkCountOfAnswers(clickedInputButton) === RESPONSE_LIMIT && gameState.lives) {
-    console.log(`next ROUND`);
+  if (checkCountOfAnswers(clickedInput) === responseLimit && gameState.lives) {
     if (roundKeys.length) {
+      console.log(`next ROUND`);
       showNextRound();
     } else {
-      // показывать не вторую, а следующую игру
-      showSecondGame(gameAswers, gameState);
+      if (gamesArray.length === 0) {
+        console.log(`WIIIIIIIIIN`);
+        changeScreen(statsScreenElement);
+      } else {
+        console.log(`NEXT GAME`);
+        showFirstGame(false, gameAnswers, gameState);
+      }
     }
   }
 }
@@ -126,7 +158,9 @@ const headerMarkup = (state) => `
   .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
     </div>
   </header>`;
-const gameOneScreenMarkup = (state, level) => `
+const screenMarkup = (state, level, countOfQuestion) => {
+  if (countOfQuestion === 2) {
+    return `
   <div class="game">
     <p class="game__task">${state.taskTitle}</p>
     <form class="game__content">
@@ -143,7 +177,39 @@ const gameOneScreenMarkup = (state, level) => `
         </label>
       </div>`).join(``)}
     </form>
-  </div>`;
+  </div>`
+  } else if (countOfQuestion === 1) {
+    return `
+  <div class="game">
+    <p class="game__task">${state.taskTitle}</p>
+    <form class="game__content  game__content--wide">
+    ${state.questions[level].imagesPathArray.map((it, index) => `
+      <div class="game__option">
+        <img src="${state.questions[level].imagesPathArray}" alt="Option ${index + 1}" width="705" height="455">
+        <label class="game__answer  game__answer--photo">
+          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[0]}">
+          <span>${state.buttonsName[0]}</span>
+        </label>
+        <label class="game__answer  game__answer--wide  game__answer--paint">
+          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[1]}">
+          <span>${state.buttonsName[1]}</span>
+        </label>
+      </div>`).join(``)}
+    </form>
+  </div>`
+  } else if (countOfQuestion === 3) {
+    return `
+  <div class="game">
+      <p class="game__task">${state.taskTitle}</p>
+      <form class="game__content  game__content--triple">
+      ${state.questions[level].imagesPathArray.map((it, index) => `
+          <div class="game__option">
+            <img src="${it}" data-name="image${index + 1}" alt="Option 1" width="304" height="455">
+          </div>`).join(``)}
+      </form>
+   </div>`
+  }
+};
 const statsMarkup = (answers) => `
   <div class="stats">
     <ul class="stats">
@@ -152,19 +218,17 @@ const statsMarkup = (answers) => `
   .fill(`<li class="stats__result stats__result&#45;&#45;unknown"></li>`).join(``)}
     </ul>
   </div>`;
-const showFirstGame = () => {
+const showFirstGame = (isFirstGame, statsArray, lives) => {
 
-  refreshData();
-  setActualRoundKey();
-  const gameOneScreenElement = renderScreen(gameOneScreenMarkup(firstGame, actualRoundKey));
-  changeScreen(gameOneScreenElement);
+  refreshData(isFirstGame, statsArray, lives);
+  const screenElement = renderScreen(screenMarkup(currentGame, actualRoundKey, countOfImage));
+  changeScreen(screenElement);
   const container = document.querySelector(`.central`);
   const gameContainer = container.querySelector(`.game`);
   container.insertAdjacentElement(`afterbegin`, getElementFromTemplate(headerMarkup(gameState)));
-  gameContainer.insertAdjacentElement(`afterend`, getElementFromTemplate(statsMarkup(gameAswers)));
+  gameContainer.insertAdjacentElement(`afterend`, getElementFromTemplate(statsMarkup(gameAnswers)));
 
   hangListener();
 };
-// В зависимости от длины массива с картинками, можно выбирать шаблон для игры
-// если заменять не экраны а только содержание самой игры, менять предеться меньше;
+
 export default showFirstGame;
