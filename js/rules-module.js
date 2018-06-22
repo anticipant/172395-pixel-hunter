@@ -1,5 +1,5 @@
 import {renderScreen} from './util.js';
-import showFirstGame from './game-1-module.js';
+import showGame from './game-1-module.js';
 
 function checkInputValue(targetInput) {
   return targetInput.value.length;
@@ -36,7 +36,7 @@ rulesInput.addEventListener(`keyup`, (evt) => {
 const showScreenTrigger = rulesScreenElement.querySelector(`.rules__button`);
 showScreenTrigger.addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  showFirstGame(true);
+  showGame(true);
 });
 
 export default rulesScreenElement;

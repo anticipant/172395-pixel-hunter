@@ -9,6 +9,11 @@ const Limit = {
   FAST_TIME: 10,
   SLOW_TIME: 20,
 };
+const GameMode = {
+  SINGLE: 1,
+  DOUBLE: 2,
+  TRIPLE: 3
+};
 let gamesArray;
 let currentGame;
 let countOfImage;
@@ -37,6 +42,9 @@ function checkCountOfAnswers(clickedInputButton) {
 
   if (numberOfResponses.indexOf(clickedAnswer) < 0) {
     numberOfResponses.push(clickedAnswer);
+    document.querySelectorAll(`[name="${clickedAnswer}"]`).forEach((it) => {
+      it.disabled = true;
+    });
   }
   return numberOfResponses.length;
 }
@@ -92,7 +100,7 @@ function isFinished(lives) {
 }
 function hangListener() {
   const showScreenTrigger = document.querySelector(`.game__content`);
-  if (countOfImage === 3) {
+  if (countOfImage === GameMode.TRIPLE) {
     showScreenTrigger.addEventListener(`click`, (evt) => {
       if (evt.target.classList.contains(`game__option`)) {
         checkAnswer(evt.target);
@@ -112,7 +120,7 @@ function reduceLive(livesState) {
 function checkAnswer(clickedInput) {
   let answerValue;
   let answerKey;
-  if (countOfImage === 3) {
+  if (countOfImage === GameMode.TRIPLE) {
     answerKey = clickedInput.querySelector(`img`).getAttribute(`data-name`);
     answerValue = `paint`;
   } else {
@@ -133,7 +141,7 @@ function checkAnswer(clickedInput) {
       if (gamesArray.length === 0) {
         showStatisticScreen(gameAnswers, gameState.lives);
       } else {
-        showFirstGame(false, gameAnswers, gameState);
+        showGame(false, gameAnswers, gameState);
       }
     }
   }
@@ -215,7 +223,7 @@ const statsMarkup = (answers) => `
   .fill(`<li class="stats__result stats__result&#45;&#45;unknown"></li>`).join(``)}
     </ul>
   </div>`;
-const showFirstGame = (isFirstGame, statsArray, lives) => {
+const showGame = (isFirstGame, statsArray, lives) => {
 
   refreshData(isFirstGame, statsArray, lives);
   const screenElement = renderScreen(screenMarkup(currentGame, actualRoundKey, countOfImage));
@@ -228,4 +236,4 @@ const showFirstGame = (isFirstGame, statsArray, lives) => {
   hangListener();
 };
 
-export default showFirstGame;
+export default showGame;
