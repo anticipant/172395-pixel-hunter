@@ -50,6 +50,18 @@ export const games = [
           'question1': `paint`,
         }
       },
+      'level-3': {
+        imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
+        answers: {
+          'question1': `photo`,
+        }
+      },
+      'level-4': {
+        imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`],
+        answers: {
+          'question1': `paint`,
+        }
+      },
     }
   },
   {
@@ -65,6 +77,14 @@ export const games = [
         }
       },
       'level-2': {
+        imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`, `https://k42.kn3.net/CF42609C8.jpg`],
+        answers: {
+          'image1': `photo`,
+          'image2': `photo`,
+          'image3': `paint`,
+        }
+      },
+      'level-3': {
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`, `https://k42.kn3.net/CF42609C8.jpg`],
         answers: {
           'image1': `photo`,

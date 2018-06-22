@@ -22,6 +22,8 @@ let roundKeys;
 let actualRoundKey;
 let numberOfResponses = [];
 let gameAnswers = [];
+let countOfAnswers = 0;
+let userAnswers = [];
 
 function getCurrentGame(arrayOfGames) {
   currentGame = arrayOfGames.shift();
@@ -31,18 +33,21 @@ function setActualRoundKey() {
 }
 function showNextRound() {
   numberOfResponses = [];
+  userAnswers = [];
   setActualRoundKey();
   const gameBlock = document.querySelector(`.game`);
   const newGameBlock = getElementFromTemplate(screenMarkup(currentGame, actualRoundKey, countOfImage));
   gameBlock.replaceWith(newGameBlock);
   hangListener();
 }
-function checkCountOfAnswers(clickedInputButton) {
-  let clickedAnswer = clickedInputButton.getAttribute(`name`);
-
-  if (numberOfResponses.indexOf(clickedAnswer) < 0) {
-    numberOfResponses.push(clickedAnswer);
-    document.querySelectorAll(`[name="${clickedAnswer}"]`).forEach((it) => {
+function checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
+  if (numberOfResponses.indexOf(clickedAnswerKey) < 0) {
+    userAnswers.push({
+      answerKey: clickedAnswerKey,
+      answerValue: clickedAnswerValue,
+    });
+    numberOfResponses.push(clickedAnswerKey);
+    document.querySelectorAll(`[name="${clickedAnswerKey}"]`).forEach((it) => {
       it.disabled = true;
     });
   }
@@ -85,6 +90,7 @@ function refreshData(isFirstGame, statsArray, lives) {
   responseLimit = currentGame[`response-limit`];
   numberOfResponses = [];
   roundKeys = [];
+  userAnswers = [];
   for (let key in currentGame.questions) {
     if (key) {
       roundKeys.push(key);
@@ -100,15 +106,27 @@ function isFinished(lives) {
 }
 function hangListener() {
   const showScreenTrigger = document.querySelector(`.game__content`);
+  let answerValue;
+  let answerKey;
   if (countOfImage === GameMode.TRIPLE) {
     showScreenTrigger.addEventListener(`click`, (evt) => {
       if (evt.target.classList.contains(`game__option`)) {
-        checkAnswer(evt.target);
+        answerKey = evt.target.querySelector(`img`).getAttribute(`data-name`);
+        answerValue = `paint`;
+        countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
+        if (countOfAnswers === responseLimit) {
+          checkAnswer(userAnswers, answerKey, answerValue);
+        }
       }
     });
   } else {
     showScreenTrigger.addEventListener(`change`, (evt) => {
-      checkAnswer(evt.target);
+      answerKey = evt.target.getAttribute(`name`);
+      answerValue = evt.target.value;
+      countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
+      if (countOfAnswers === responseLimit) {
+        checkAnswer(userAnswers, answerKey, answerValue);
+      }
     });
   }
 }
@@ -117,24 +135,18 @@ function reduceLive(livesState) {
   updateNumberOfLives();
   isFinished(livesState.lives);
 }
-function checkAnswer(clickedInput) {
-  let answerValue;
-  let answerKey;
-  if (countOfImage === GameMode.TRIPLE) {
-    answerKey = clickedInput.querySelector(`img`).getAttribute(`data-name`);
-    answerValue = `paint`;
-  } else {
-    answerKey = clickedInput.getAttribute(`name`);
-    answerValue = clickedInput.value;
-  }
-  if (currentGame.questions[actualRoundKey].answers[answerKey] === answerValue) {
+function checkAnswer(answers) {
+  let isCorrectAnswers = answers.every((it) => {
+    return currentGame.questions[actualRoundKey].answers[it.answerKey] === it.answerValue;
+  });
+
+  if (isCorrectAnswers) {
     updateStats(true, 15);
   } else {
     updateStats(false, 14);
     reduceLive(gameState);
   }
-
-  if (checkCountOfAnswers(clickedInput) === responseLimit && gameState.lives) {
+  if (countOfAnswers === responseLimit && gameState.lives) {
     if (roundKeys.length) {
       showNextRound();
     } else {
@@ -156,14 +168,14 @@ const headerMarkup = (state) => `
     </div>
     <h1 class="game__timer">NN</h1>
     <div class="game__lives">
-    ${new Array(3 - state.lives)
+    ${new Array(Limit.LIVES - state.lives)
   .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
     ${new Array(state.lives)
   .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
     </div>
   </header>`;
 const screenMarkup = (state, level, countOfQuestion) => {
-  if (countOfQuestion === 2) {
+  if (countOfQuestion === GameMode.DOUBLE) {
     return `
   <div class="game">
     <p class="game__task">${state.taskTitle}</p>
@@ -182,7 +194,7 @@ const screenMarkup = (state, level, countOfQuestion) => {
       </div>`).join(``)}
     </form>
   </div>`;
-  } else if (countOfQuestion === 1) {
+  } else if (countOfQuestion === GameMode.SINGLE) {
     return `
   <div class="game">
     <p class="game__task">${state.taskTitle}</p>
@@ -201,7 +213,7 @@ const screenMarkup = (state, level, countOfQuestion) => {
       </div>`).join(``)}
     </form>
   </div>`;
-  } else if (countOfQuestion === 3) {
+  } else if (countOfQuestion === GameMode.TRIPLE) {
     return `
   <div class="game">
       <p class="game__task">${state.taskTitle}</p>
