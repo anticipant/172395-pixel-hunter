@@ -1,4 +1,4 @@
-export const createTimer = (time) => {
+const createTimer = (time) => {
   if (typeof time !== `number`) {
     throw new Error(`Wrong type Expect number type`);
   }
@@ -16,3 +16,4 @@ export const createTimer = (time) => {
     }
   };
 };
+export default createTimer;

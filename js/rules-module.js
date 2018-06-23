@@ -1,5 +1,5 @@
-import {renderScreen, changeScreen} from './util.js';
-import gameOneScreenElement from './game-1-module.js';
+import {renderScreen} from './util.js';
+import showGame from './game-1-module.js';
 
 function checkInputValue(targetInput) {
   return targetInput.value.length;
@@ -27,17 +27,7 @@ const rulesScreenMarkup = `<header class="header">
       <input class="rules__input" type="text" placeholder="Ваше Имя">
       <button class="rules__button  continue" type="submit" disabled>Go!</button>
     </form>
-  </div>
-  <footer class="footer">
-    <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-    <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2016</span>
-    <div class="footer__social-links">
-      <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-      <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-      <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-      <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-    </div>
-  </footer>`;
+  </div>`;
 const rulesScreenElement = renderScreen(rulesScreenMarkup);
 const rulesInput = rulesScreenElement.querySelector(`.rules__input`);
 rulesInput.addEventListener(`keyup`, (evt) => {
@@ -46,7 +36,7 @@ rulesInput.addEventListener(`keyup`, (evt) => {
 const showScreenTrigger = rulesScreenElement.querySelector(`.rules__button`);
 showScreenTrigger.addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  changeScreen(gameOneScreenElement);
+  showGame(true);
 });
 
 export default rulesScreenElement;
