@@ -79,14 +79,14 @@ function updateStats(answerResult, timeResult) {
 }
 function refreshData(isFirstGame, statsArray, lives) {
   if (isFirstGame) {
-    gamesArray = games.slice(); // скопировал массив игр
+    gamesArray = games.slice();
     gameState = Object.assign({}, headerState);
     gameAnswers = [];
   } else {
     gameState = Object.assign({}, lives);
     gameAnswers = statsArray;
   }
-  getCurrentGame(gamesArray); // помешаю в currentGame текущую игру из скопированного массива игр
+  getCurrentGame(gamesArray);
   responseLimit = currentGame[`response-limit`];
   numberOfResponses = [];
   roundKeys = [];
@@ -182,13 +182,13 @@ const screenMarkup = (state, level, countOfQuestion) => {
     <form class="game__content">
     ${state.questions[level].imagesPathArray.map((it, index) => `
         <div class="game__option">
-        <img src="${it}" alt="Option ${index + 1}" width="468" height="458">
+        <img src="${it}" alt="Option ${index}" width="468" height="458">
         <label class="game__answer game__answer--photo">
-          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[0]}">
+          <input name="question${index}" type="radio" value="${state.buttonsValue[0]}">
           <span>${state.buttonsName[0]}</span>
         </label>
         <label class="game__answer game__answer--paint">
-          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[1]}">
+          <input name="question${index}" type="radio" value="${state.buttonsValue[1]}">
           <span>${state.buttonsName[1]}</span>
         </label>
       </div>`).join(``)}
@@ -201,13 +201,13 @@ const screenMarkup = (state, level, countOfQuestion) => {
     <form class="game__content  game__content--wide">
     ${state.questions[level].imagesPathArray.map((it, index) => `
       <div class="game__option">
-        <img src="${state.questions[level].imagesPathArray}" alt="Option ${index + 1}" width="705" height="455">
+        <img src="${state.questions[level].imagesPathArray}" alt="Option ${index}" width="705" height="455">
         <label class="game__answer  game__answer--photo">
-          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[0]}">
+          <input name="question${index}" type="radio" value="${state.buttonsValue[0]}">
           <span>${state.buttonsName[0]}</span>
         </label>
         <label class="game__answer  game__answer--wide  game__answer--paint">
-          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[1]}">
+          <input name="question${index}" type="radio" value="${state.buttonsValue[1]}">
           <span>${state.buttonsName[1]}</span>
         </label>
       </div>`).join(``)}
@@ -220,7 +220,7 @@ const screenMarkup = (state, level, countOfQuestion) => {
       <form class="game__content  game__content--triple">
       ${state.questions[level].imagesPathArray.map((it, index) => `
           <div class="game__option">
-            <img src="${it}" data-name="image${index + 1}" alt="Option 1" width="304" height="455">
+            <img src="${it}" data-name="image${index}" alt="Option ${index}" width="304" height="455">
           </div>`).join(``)}
       </form>
    </div>`;
