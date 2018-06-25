@@ -1,5 +1,6 @@
 import {games, headerState} from './data.js';
 import showStatisticScreen from './stats-module.js';
+import getUserResult from './get-user-score.js';
 import LevelView from './level-view.js'
 import {changeScreen} from './util.js';
 import StatsLevelView from './stats-level-view.js';
@@ -96,7 +97,7 @@ function refreshData(isFirstGame, statsArray, lives) {
 }
 function isFinished(lives) {
   if (!lives) {
-    showStatisticScreen(gameAnswers, gameState.lives);
+    showStatisticScreen(gameAnswers, gameState.lives, getUserResult(gameAnswers, gameState.lives));
   }
 }
 function reduceLive(livesState) {
@@ -120,7 +121,7 @@ function checkAnswer(answers) {
       showNextRound();
     } else {
       if (gamesArray.length === 0) {
-        showStatisticScreen(gameAnswers, gameState.lives);
+        showStatisticScreen(gameAnswers, gameState.lives, getUserResult(gameAnswers, gameState.lives));
       } else {
         showGame(false, gameAnswers, gameState);
       }
