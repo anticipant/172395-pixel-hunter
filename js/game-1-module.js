@@ -1,12 +1,7 @@
 import {games, headerState} from './data.js';
 import showStatisticScreen from './stats-module.js';
-import {renderScreen, changeScreen, getElementFromTemplate} from './util.js';
-
-class LevelView {
-  constructor () {
-
-  }
-}
+import LevelView from './level-view.js'
+import {changeScreen, renderScreen} from './util.js';
 
 let responseLimit;
 const Limit = {
@@ -42,9 +37,7 @@ function showNextRound() {
   userAnswers = [];
   setActualRoundKey();
   const gameBlock = document.querySelector(`.game`);
-  const newGameBlock = getElementFromTemplate(screenMarkup(currentGame, actualRoundKey, countOfImage));
-  gameBlock.replaceWith(newGameBlock);
-  hangListener();
+  gameBlock.replaceWith(showLevel(currentGame, actualRoundKey, countOfImage, GameMode));
 }
 function checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
   if (numberOfResponses.indexOf(clickedAnswerKey) < 0) {
@@ -53,15 +46,12 @@ function checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
       answerValue: clickedAnswerValue,
     });
     numberOfResponses.push(clickedAnswerKey);
-    document.querySelectorAll(`[name="${clickedAnswerKey}"]`).forEach((it) => {
-      it.disabled = true;
-    });
   }
   return numberOfResponses.length;
 }
 function updateNumberOfLives() {
   const header = document.querySelector(`.header`);
-  const newHeader = getElementFromTemplate(headerMarkup(gameState));
+  const newHeader = renderScreen(headerMarkup(gameState));
   header.replaceWith(newHeader);
 }
 function updateStats(answerResult, timeResult) {
@@ -80,7 +70,7 @@ function updateStats(answerResult, timeResult) {
   }
   gameAnswers.push({answer: answerResult, time: timeResult, statsResult: result});
   const stats = document.querySelector(`div.stats`);
-  const newStats = getElementFromTemplate(statsMarkup(gameAnswers));
+  const newStats = renderScreen(statsMarkup(gameAnswers));
   stats.replaceWith(newStats);
 }
 function refreshData(isFirstGame, statsArray, lives) {
@@ -108,32 +98,6 @@ function refreshData(isFirstGame, statsArray, lives) {
 function isFinished(lives) {
   if (!lives) {
     showStatisticScreen(gameAnswers, gameState.lives);
-  }
-}
-function hangListener() {
-  const showScreenTrigger = document.querySelector(`.game__content`);
-  let answerValue; //paint or photo
-  let answerKey; //question1 or question2
-  if (countOfImage === GameMode.TRIPLE) {
-    showScreenTrigger.addEventListener(`click`, (evt) => {
-      if (evt.target.classList.contains(`game__option`)) {
-        answerKey = evt.target.querySelector(`img`).getAttribute(`data-name`);
-        answerValue = `paint`;
-        countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
-        if (countOfAnswers === responseLimit) {
-          checkAnswer(userAnswers);
-        }
-      }
-    });
-  } else {
-    showScreenTrigger.addEventListener(`change`, (evt) => {
-      answerKey = evt.target.getAttribute(`name`);
-      answerValue = evt.target.value;
-      countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
-      if (countOfAnswers === responseLimit) {
-        checkAnswer(userAnswers);
-      }
-    });
   }
 }
 function reduceLive(livesState) {
@@ -180,58 +144,15 @@ const headerMarkup = (state) => `
   .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
     </div>
   </header>`;
-const screenMarkup = (state, level, countOfQuestion) => {
-  if (countOfQuestion === GameMode.DOUBLE) {
-    return `
-  <div class="game">
-    <p class="game__task">${state.taskTitle}</p>
-    <form class="game__content">
-    ${state.questions[level].imagesPathArray.map((it, index) => `
-        <div class="game__option">
-        <img src="${it}" alt="Option ${index + 1}" width="468" height="458">
-        <label class="game__answer game__answer--photo">
-          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[0]}">
-          <span>${state.buttonsName[0]}</span>
-        </label>
-        <label class="game__answer game__answer--paint">
-          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[1]}">
-          <span>${state.buttonsName[1]}</span>
-        </label>
-      </div>`).join(``)}
-    </form>
-  </div>`;
-  } else if (countOfQuestion === GameMode.SINGLE) {
-    return `
-  <div class="game">
-    <p class="game__task">${state.taskTitle}</p>
-    <form class="game__content  game__content--wide">
-    ${state.questions[level].imagesPathArray.map((it, index) => `
-      <div class="game__option">
-        <img src="${state.questions[level].imagesPathArray}" alt="Option ${index + 1}" width="705" height="455">
-        <label class="game__answer  game__answer--photo">
-          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[0]}">
-          <span>${state.buttonsName[0]}</span>
-        </label>
-        <label class="game__answer  game__answer--wide  game__answer--paint">
-          <input name="question${index + 1}" type="radio" value="${state.buttonsValue[1]}">
-          <span>${state.buttonsName[1]}</span>
-        </label>
-      </div>`).join(``)}
-    </form>
-  </div>`;
-  } else if (countOfQuestion === GameMode.TRIPLE) {
-    return `
-  <div class="game">
-      <p class="game__task">${state.taskTitle}</p>
-      <form class="game__content  game__content--triple">
-      ${state.questions[level].imagesPathArray.map((it, index) => `
-          <div class="game__option">
-            <img src="${it}" data-name="image${index + 1}" alt="Option 1" width="304" height="455">
-          </div>`).join(``)}
-      </form>
-   </div>`;
-  }
-  return null;
+const showLevel = (state, level, countOfQuestion, GameMode) => {
+  const levelView = new LevelView(state, level, countOfQuestion, GameMode);
+  levelView.onAnswer = (answerKey, answerValue) => {
+    countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
+    if (countOfAnswers === responseLimit) {
+      checkAnswer(userAnswers);
+    }
+  };
+  return levelView.element;
 };
 const statsMarkup = (answers) => `
   <div class="stats">
@@ -244,14 +165,11 @@ const statsMarkup = (answers) => `
 const showGame = (isFirstGame, statsArray, lives) => {
 
   refreshData(isFirstGame, statsArray, lives);
-  const screenElement = renderScreen(screenMarkup(currentGame, actualRoundKey, countOfImage));
-  changeScreen(screenElement);
+  changeScreen(showLevel(currentGame, actualRoundKey, countOfImage, GameMode));
   const container = document.querySelector(`.central`);
-  const gameContainer = container.querySelector(`.game`);
-  container.insertAdjacentElement(`afterbegin`, getElementFromTemplate(headerMarkup(gameState)));
-  gameContainer.insertAdjacentElement(`afterend`, getElementFromTemplate(statsMarkup(gameAnswers)));
 
-  hangListener();
+  container.insertAdjacentElement(`afterbegin`, renderScreen(headerMarkup(gameState)));
+  container.insertAdjacentElement(`beforeend`, renderScreen(statsMarkup(gameAnswers)));
 };
 
 export default showGame;
