@@ -1,12 +1,12 @@
 import AbstractView from './abstract-view.js';
 
 export default class LevelLevelView extends AbstractView {
-  constructor (state, limit) {
+  constructor(state, limit) {
     super();
     this.state = state;
     this.limit = limit;
   }
-  render () {
+  render() {
     return `<header class="header">
     <div class="header__back">
       <button class="back">
@@ -21,9 +21,9 @@ export default class LevelLevelView extends AbstractView {
     ${new Array(this.state.lives)
       .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
     </div>
-  </header>`
+  </header>`;
   }
-  get element () {
+  get element() {
     if (this._element) {
       return this._element;
     }

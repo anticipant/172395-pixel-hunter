@@ -1,14 +1,14 @@
 import AbstractView from './abstract-view.js';
 
 export default class StatsModuleView extends AbstractView {
-  constructor (answers, result, bonus, lives) {
+  constructor(answers, result, bonus, lives) {
     super();
     this.answers = answers;
     this.result = result;
     this.bonus = bonus;
     this.lives = lives;
   }
-  userResultMarkup () {
+  userResultMarkup() {
     const fastAnswers = this.answers.filter((answer) => {
       return answer.statsResult === `fast`;
     }).length;
@@ -77,7 +77,7 @@ export default class StatsModuleView extends AbstractView {
         <td colspan="5" class="result__total  result__total--final">${this.result}</td>
       </tr>`;
   }
-  render () {
+  render() {
     return `
 <header class="header">
     <div class="header__back">
@@ -144,9 +144,9 @@ export default class StatsModuleView extends AbstractView {
         <td colspan="5" class="result__total  result__total--final">950</td>
       </tr>
     </table>
-  </div>`
+  </div>`;
   }
-  get element () {
+  get element() {
     if (this._element) {
       return this._element;
     }

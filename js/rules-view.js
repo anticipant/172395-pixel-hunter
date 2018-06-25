@@ -1,10 +1,10 @@
 import AbstractVIew from './abstract-view.js';
 
-export default  class RulesView extends AbstractVIew {
-  constructor () {
+export default class RulesView extends AbstractVIew {
+  constructor() {
     super();
   }
-  render () {
+  render() {
     return `<header class="header">
     <div class="header__back">
       <button class="back">
@@ -30,8 +30,8 @@ export default  class RulesView extends AbstractVIew {
     </form>
   </div>`;
   }
-  onClick () {}
-  bind () {
+  onClick() {}
+  bind() {
     const rulesInput = this.element.querySelector(`.rules__input`);
     rulesInput.addEventListener(`keyup`, (evt) => {
       showScreenTrigger.disabled = !(evt.target.value.length > 0);
@@ -42,7 +42,7 @@ export default  class RulesView extends AbstractVIew {
       this.onClick();
     });
   }
-  get element () {
+  get element() {
     if (this._element) {
       return this._element;
     }

@@ -1,7 +1,7 @@
 import {games, headerState} from './data.js';
 import showStatisticScreen from './stats-module.js';
 import getUserResult from './get-user-score.js';
-import LevelView from './level-view.js'
+import LevelView from './level-view.js';
 import {changeScreen} from './util.js';
 import StatsLevelView from './stats-level-view.js';
 import LevelLevelView from './header-level-view.js';
@@ -49,6 +49,12 @@ function checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
       answerValue: clickedAnswerValue,
     });
     numberOfResponses.push(clickedAnswerKey);
+  } else {
+  // todo заменить этот костыль
+    userAnswers = [{
+      answerKey: clickedAnswerKey,
+      answerValue: clickedAnswerValue,
+    }];
   }
   return numberOfResponses.length;
 }
@@ -83,7 +89,8 @@ function refreshData(isFirstGame, statsArray, lives) {
     gameState = Object.assign({}, lives);
     gameAnswers = statsArray;
   }
-  getCurrentGame(gamesArray);responseLimit = currentGame[`response-limit`];
+  getCurrentGame(gamesArray);
+  responseLimit = currentGame[`response-limit`];
   numberOfResponses = [];
   roundKeys = [];
   userAnswers = [];
@@ -129,11 +136,11 @@ function checkAnswer(answers) {
   }
 }
 const showHeader = (state, limit) => {
-  const levelLevelView =  new LevelLevelView(state, limit);
+  const levelLevelView = new LevelLevelView(state, limit);
   return levelLevelView.element;
 };
-const showLevel = (state, level, countOfQuestion, GameMode) => {
-  const levelView = new LevelView(state, level, countOfQuestion, GameMode);
+const showLevel = (state, level, countOfQuestion, gameMode) => {
+  const levelView = new LevelView(state, level, countOfQuestion, gameMode);
   levelView.onAnswer = (answerKey, answerValue) => {
     countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
     if (countOfAnswers === responseLimit) {

@@ -1,14 +1,14 @@
 import AbstractView from './abstract-view.js';
 
 export default class LevelView extends AbstractView {
-  constructor (state, level, countOfQuestion, GameMode) {
+  constructor(state, level, countOfQuestion, GameMode) {
     super();
     this.state = state;
     this.level = level;
     this.countOfQuestion = countOfQuestion;
     this.GameMode = GameMode;
   }
-  render () {
+  render() {
     if (this.countOfQuestion === this.GameMode.DOUBLE) {
       return `
   <div class="game">
@@ -61,8 +61,8 @@ export default class LevelView extends AbstractView {
     }
     return null;
   }
-  onAnswer (answerKey, answerValue) {}
-  bind () {
+  onAnswer() {}
+  bind() {
     const showScreenTrigger = this.element.querySelector(`.game__content`);
     let answerValue;
     let answerKey;
