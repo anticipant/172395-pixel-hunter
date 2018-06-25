@@ -2,6 +2,12 @@ import {games, headerState} from './data.js';
 import showStatisticScreen from './stats-module.js';
 import {renderScreen, changeScreen, getElementFromTemplate} from './util.js';
 
+class LevelView {
+  constructor () {
+
+  }
+}
+
 let responseLimit;
 const Limit = {
   LIVES: 3,
@@ -106,8 +112,8 @@ function isFinished(lives) {
 }
 function hangListener() {
   const showScreenTrigger = document.querySelector(`.game__content`);
-  let answerValue;
-  let answerKey;
+  let answerValue; //paint or photo
+  let answerKey; //question1 or question2
   if (countOfImage === GameMode.TRIPLE) {
     showScreenTrigger.addEventListener(`click`, (evt) => {
       if (evt.target.classList.contains(`game__option`)) {
@@ -115,7 +121,7 @@ function hangListener() {
         answerValue = `paint`;
         countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
         if (countOfAnswers === responseLimit) {
-          checkAnswer(userAnswers, answerKey, answerValue);
+          checkAnswer(userAnswers);
         }
       }
     });
@@ -125,7 +131,7 @@ function hangListener() {
       answerValue = evt.target.value;
       countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
       if (countOfAnswers === responseLimit) {
-        checkAnswer(userAnswers, answerKey, answerValue);
+        checkAnswer(userAnswers);
       }
     });
   }
@@ -137,7 +143,7 @@ function reduceLive(livesState) {
 }
 function checkAnswer(answers) {
   let isCorrectAnswers = answers.every((it) => {
-    return currentGame.questions[actualRoundKey].answers[it.answerKey] === it.answerValue;
+    return currentGame.questions[actualRoundKey].answers[it.answerKey][it.answerValue];
   });
 
   if (isCorrectAnswers) {
