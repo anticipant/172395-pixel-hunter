@@ -1,5 +1,5 @@
 import {changeScreen} from './util.js';
-import showGame from './game-1-module.js';
+import showGame from './show-game.js';
 import IntroView from './intro-view.js';
 import GreetingView from './greeting-view.js';
 import RulesView from './rules-view.js';
