@@ -1,7 +1,9 @@
 import {games, headerState} from './data.js';
 import showStatisticScreen from './stats-module.js';
 import LevelView from './level-view.js'
-import {changeScreen, renderScreen} from './util.js';
+import {changeScreen} from './util.js';
+import StatsLevelView from './stats-level-view.js';
+import LevelLevelView from './header-level-view.js';
 
 let responseLimit;
 const Limit = {
@@ -51,8 +53,7 @@ function checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
 }
 function updateNumberOfLives() {
   const header = document.querySelector(`.header`);
-  const newHeader = renderScreen(headerMarkup(gameState));
-  header.replaceWith(newHeader);
+  header.replaceWith(showHeader(gameState, Limit));
 }
 function updateStats(answerResult, timeResult) {
   let result;
@@ -70,20 +71,18 @@ function updateStats(answerResult, timeResult) {
   }
   gameAnswers.push({answer: answerResult, time: timeResult, statsResult: result});
   const stats = document.querySelector(`div.stats`);
-  const newStats = renderScreen(statsMarkup(gameAnswers));
-  stats.replaceWith(newStats);
+  stats.replaceWith(showStats(gameAnswers));
 }
 function refreshData(isFirstGame, statsArray, lives) {
   if (isFirstGame) {
-    gamesArray = games.slice(); // скопировал массив игр
+    gamesArray = games.slice();
     gameState = Object.assign({}, headerState);
     gameAnswers = [];
   } else {
     gameState = Object.assign({}, lives);
     gameAnswers = statsArray;
   }
-  getCurrentGame(gamesArray); // помешаю в currentGame текущую игру из скопированного массива игр
-  responseLimit = currentGame[`response-limit`];
+  getCurrentGame(gamesArray);responseLimit = currentGame[`response-limit`];
   numberOfResponses = [];
   roundKeys = [];
   userAnswers = [];
@@ -128,22 +127,10 @@ function checkAnswer(answers) {
     }
   }
 }
-const headerMarkup = (state) => `
-<header class="header">
-    <div class="header__back">
-      <button class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.svg" width="101" height="44">
-      </button>
-    </div>
-    <h1 class="game__timer">NN</h1>
-    <div class="game__lives">
-    ${new Array(Limit.LIVES - state.lives)
-  .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
-    ${new Array(state.lives)
-  .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
-    </div>
-  </header>`;
+const showHeader = (state, limit) => {
+  const levelLevelView =  new LevelLevelView(state, limit);
+  return levelLevelView.element;
+};
 const showLevel = (state, level, countOfQuestion, GameMode) => {
   const levelView = new LevelView(state, level, countOfQuestion, GameMode);
   levelView.onAnswer = (answerKey, answerValue) => {
@@ -154,22 +141,17 @@ const showLevel = (state, level, countOfQuestion, GameMode) => {
   };
   return levelView.element;
 };
-const statsMarkup = (answers) => `
-  <div class="stats">
-    <ul class="stats">
-    ${answers.map((it) => `<li class="stats__result stats__result&#45;&#45;${it.statsResult}"></li>`).join(``)}
-    ${new Array(10 - answers.length)
-  .fill(`<li class="stats__result stats__result&#45;&#45;unknown"></li>`).join(``)}
-    </ul>
-  </div>`;
+const showStats = (answers) => {
+  const statsLevelView = new StatsLevelView(answers);
+  return statsLevelView.element;
+};
 const showGame = (isFirstGame, statsArray, lives) => {
-
   refreshData(isFirstGame, statsArray, lives);
   changeScreen(showLevel(currentGame, actualRoundKey, countOfImage, GameMode));
   const container = document.querySelector(`.central`);
-
-  container.insertAdjacentElement(`afterbegin`, renderScreen(headerMarkup(gameState)));
-  container.insertAdjacentElement(`beforeend`, renderScreen(statsMarkup(gameAnswers)));
+  const footer = document.querySelector(`.footer`);
+  container.insertAdjacentElement(`afterbegin`, showHeader(gameState, Limit));
+  footer.insertAdjacentElement(`beforeBegin`, showStats(gameAnswers));
 };
 
 export default showGame;

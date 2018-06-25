@@ -64,8 +64,8 @@ export default class LevelView extends AbstractView {
   onAnswer (answerKey, answerValue) {}
   bind () {
     const showScreenTrigger = this.element.querySelector(`.game__content`);
-    let answerValue; //paint or photo
-    let answerKey; //question1 or question2
+    let answerValue;
+    let answerKey;
     if (this.countOfQuestion === this.GameMode.TRIPLE) {
       showScreenTrigger.addEventListener(`click`, (evt) => {
         if (evt.target.classList.contains(`game__option`)) {
