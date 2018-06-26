@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import getUserResult from '../get-user-score.js';
+import {getUserResult} from '../get-user-score.js';
 const pseudoAnswers = (obj, counter) => {
   const answers = [];
   for (let i = 0; i < counter; i++) {

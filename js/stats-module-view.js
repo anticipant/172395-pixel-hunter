@@ -1,11 +1,15 @@
 import AbstractView from './abstract-view.js';
-
+const Bonus = {
+  FAST: 50,
+  SLOW: -50,
+  RIGHT: 100,
+  LIVE: 50
+};
 export default class StatsModuleView extends AbstractView {
-  constructor(answers, result, bonus, lives) {
+  constructor(answers, lives, result) {
     super();
     this.answers = answers;
     this.result = result;
-    this.bonus = bonus;
     this.lives = lives;
   }
   userResultMarkup() {
@@ -41,36 +45,36 @@ export default class StatsModuleView extends AbstractView {
       .fill(`<li class="stats__result stats__result&#45;&#45;unknown"></li>`).join(``)}
           </ul>
         </td>
-        <td class="result__points">×&nbsp;${this.bonus.RIGHT}</td>
+        <td class="result__points">×&nbsp;${Bonus.RIGHT}</td>
         <td class="result__total">
-          ${this.bonus.RIGHT * correctAnswers}
+          ${Bonus.RIGHT * correctAnswers}
         </td>
       </tr>
       <tr ${fastAnswers === 0 ? `style="display: none;"` : ``}>
         <td></td>
         <td class="result__extra">Бонус за скорость:</td>
         <td class="result__extra">${fastAnswers}&nbsp;<span class="stats__result stats__result--fast"></span></td>
-        <td class="result__points">×&nbsp;${this.bonus.FAST}</td>
+        <td class="result__points">×&nbsp;${Bonus.FAST}</td>
         <td class="result__total">
-          ${this.bonus.FAST * fastAnswers}
+          ${Bonus.FAST * fastAnswers}
         </td>
       </tr>
       <tr>
         <td></td>
         <td class="result__extra">Бонус за жизни:</td>
         <td class="result__extra">${this.lives}&nbsp;<span class="stats__result stats__result--alive"></span></td>
-        <td class="result__points">×&nbsp;${this.bonus.LIVE}</td>
+        <td class="result__points">×&nbsp;${Bonus.LIVE}</td>
         <td class="result__total">
-          ${this.bonus.LIVE * this.lives}
+          ${Bonus.LIVE * this.lives}
         </td>
       </tr>
       <tr ${slowAnswers === 0 ? `style="display: none;"` : ``}>
         <td></td>
         <td class="result__extra">Штраф за медлительность:</td>
         <td class="result__extra">${slowAnswers}&nbsp;<span class="stats__result stats__result--slow"></span></td>
-        <td class="result__points">×&nbsp;${this.bonus.SLOW}</td>
+        <td class="result__points">×&nbsp;${Bonus.SLOW}</td>
         <td class="result__total">
-          ${this.bonus.SLOW * slowAnswers}
+          ${Bonus.SLOW * slowAnswers}
         </td>
       </tr>
       <tr>

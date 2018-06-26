@@ -1,4 +1,4 @@
-import {changeScreen} from './util.js';
+import changeScreen from './util.js';
 import showGame from './show-game.js';
 import IntroView from './intro-view.js';
 import GreetingView from './greeting-view.js';

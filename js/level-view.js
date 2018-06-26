@@ -1,15 +1,19 @@
 import AbstractView from './abstract-view.js';
 
+const GameMode = {
+  SINGLE: 1,
+  DOUBLE: 2,
+  TRIPLE: 3
+};
 export default class LevelView extends AbstractView {
-  constructor(state, level, countOfQuestion, GameMode) {
+  constructor(state, level, countOfQuestion) {
     super();
     this.state = state;
     this.level = level;
     this.countOfQuestion = countOfQuestion;
-    this.GameMode = GameMode;
   }
   render() {
-    if (this.countOfQuestion === this.GameMode.DOUBLE) {
+    if (this.countOfQuestion === GameMode.DOUBLE) {
       return `
   <div class="game">
     <p class="game__task">${this.state.taskTitle}</p>
@@ -28,7 +32,7 @@ export default class LevelView extends AbstractView {
       </div>`).join(``)}
     </form>
   </div>`;
-    } else if (this.countOfQuestion === this.GameMode.SINGLE) {
+    } else if (this.countOfQuestion === GameMode.SINGLE) {
       return `
   <div class="game">
     <p class="game__task">${this.state.taskTitle}</p>
@@ -47,7 +51,7 @@ export default class LevelView extends AbstractView {
       </div>`).join(``)}
     </form>
   </div>`;
-    } else if (this.countOfQuestion === this.GameMode.TRIPLE) {
+    } else if (this.countOfQuestion === GameMode.TRIPLE) {
       return `
   <div class="game">
       <p class="game__task">${this.state.taskTitle}</p>
@@ -66,7 +70,7 @@ export default class LevelView extends AbstractView {
     const showScreenTrigger = this.element.querySelector(`.game__content`);
     let answerValue;
     let answerKey;
-    if (this.countOfQuestion === this.GameMode.TRIPLE) {
+    if (this.countOfQuestion === GameMode.TRIPLE) {
       showScreenTrigger.addEventListener(`click`, (evt) => {
         if (evt.target.classList.contains(`game__option`)) {
           answerKey = evt.target.querySelector(`img`).getAttribute(`data-name`);

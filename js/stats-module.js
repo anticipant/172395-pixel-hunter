@@ -1,14 +1,10 @@
-import {changeScreen} from './util.js';
+import changeScreen from './util.js';
 import StatsModuleView from './stats-module-view.js';
+import {getUserResult} from './get-user-score.js';
 
-const Bonus = {
-  FAST: 50,
-  SLOW: -50,
-  RIGHT: 100,
-  LIVE: 50
-};
-const showStatisticScreen = (answers, lives, gameResult) => {
-  const statsModuleView = new StatsModuleView(answers, gameResult, Bonus, lives);
+const showStatisticScreen = (answers, lives) => {
+  const userResult = getUserResult(answers, lives);
+  const statsModuleView = new StatsModuleView(answers, lives, userResult);
   changeScreen(statsModuleView.element);
 };
 

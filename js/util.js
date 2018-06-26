@@ -7,3 +7,4 @@ export const changeScreen = (element) => {
   mainElement.appendChild(element);
   mainElement.insertAdjacentElement(`beforeend`, footer.element);
 };
+export default changeScreen;
