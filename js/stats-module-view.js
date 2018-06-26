@@ -147,6 +147,11 @@ export default class StatsModuleView extends AbstractView {
   </div>`;
   }
   get element() {
-    super.element();
+    if (this._element) {
+      return this._element;
+    }
+    this._element = document.createElement(`div`);
+    this._element.innerHTML = this.render().trim();
+    return this._element;
   }
 }

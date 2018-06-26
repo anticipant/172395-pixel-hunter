@@ -43,6 +43,12 @@ export default class RulesView extends AbstractVIew {
     });
   }
   get element() {
-    super.element();
+    if (this._element) {
+      return this._element;
+    }
+    this._element = document.createElement(`div`);
+    this._element.innerHTML = this.render().trim();
+    this.bind();
+    return this._element;
   }
 }
