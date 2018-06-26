@@ -83,12 +83,6 @@ export default class LevelView extends AbstractView {
     }
   }
   get element() {
-    if (this._element) {
-      return this._element;
-    }
-    this._element = document.createElement(`div`);
-    this._element.innerHTML = this.render().trim();
-    this.bind();
-    return this._element;
+    super.element();
   }
 }
