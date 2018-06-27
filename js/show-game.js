@@ -15,7 +15,6 @@ let roundKeys;
 let actualRoundKey;
 let numberOfResponses = [];
 let gameAnswers = [];
-let countOfAnswers = 0;
 let userAnswers = [];
 
 function getCurrentGame(arrayOfGames) {
@@ -30,22 +29,6 @@ function showNextRound() {
   setActualRoundKey();
   const gameBlock = document.querySelector(`.game`);
   gameBlock.replaceWith(showLevel(currentGame, actualRoundKey, countOfImage));
-}
-function checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
-  if (numberOfResponses.indexOf(clickedAnswerKey) < 0) {
-    userAnswers.push({
-      answerKey: clickedAnswerKey,
-      answerValue: clickedAnswerValue,
-    });
-    numberOfResponses.push(clickedAnswerKey);
-  } else {
-  // todo заменить этот костыль
-    userAnswers = [{
-      answerKey: clickedAnswerKey,
-      answerValue: clickedAnswerValue,
-    }];
-  }
-  return numberOfResponses.length;
 }
 function updateNumberOfLives() {
   const header = document.querySelector(`.header`);
@@ -80,9 +63,7 @@ function refreshData(isFirstGame, statsArray, lives) {
   }
   getCurrentGame(gamesArray);
   responseLimit = currentGame[`response-limit`];
-  numberOfResponses = [];
   roundKeys = [];
-  userAnswers = [];
   for (let key in currentGame.questions) {
     if (key) {
       roundKeys.push(key);
@@ -101,18 +82,14 @@ function reduceLive(livesState) {
   updateNumberOfLives();
   isFinished(livesState.lives);
 }
-function checkAnswer(answers) {
-  let isCorrectAnswers = answers.every((it) => {
-    return currentGame.questions[actualRoundKey].answers[it.answerKey][it.answerValue];
-  });
-
-  if (isCorrectAnswers) {
+function checkAnswer(isCorrect) {
+  if (isCorrect) {
     updateStats(true, 15);
   } else {
     updateStats(false, 14);
     reduceLive(gameState);
   }
-  if (countOfAnswers === responseLimit && gameState.lives) {
+  if (gameState.lives) {
     if (roundKeys.length) {
       showNextRound();
     } else {
@@ -130,11 +107,8 @@ const showHeader = (state) => {
 };
 const showLevel = (state, level, countOfQuestion) => {
   const levelView = new LevelView(state, level, countOfQuestion);
-  levelView.onAnswer = (answerKey, answerValue) => {
-    countOfAnswers = checkCountOfAnswers(answerKey, answerValue);
-    if (countOfAnswers === responseLimit) {
-      checkAnswer(userAnswers);
-    }
+  levelView.onAnswer = (isCorrectAnswers) => {
+    checkAnswer(isCorrectAnswers);
   };
   return levelView.element;
 };

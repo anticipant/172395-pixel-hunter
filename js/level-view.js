@@ -5,6 +5,9 @@ const GameMode = {
   DOUBLE: 2,
   TRIPLE: 3
 };
+let numberOfResponses = [];
+let userAnswers = [];
+
 export default class LevelView extends AbstractView {
   constructor(state, level, countOfQuestion) {
     super();
@@ -75,15 +78,44 @@ export default class LevelView extends AbstractView {
         if (evt.target.classList.contains(`game__option`)) {
           answerKey = evt.target.querySelector(`img`).getAttribute(`data-name`);
           answerValue = `paint`;
-          this.onAnswer(answerKey, answerValue);
+          this.checkAnswer(answerKey, answerValue);
         }
       });
     } else {
       showScreenTrigger.addEventListener(`change`, (evt) => {
         answerKey = evt.target.getAttribute(`name`);
         answerValue = evt.target.value;
-        this.onAnswer(answerKey, answerValue);
+        this.checkAnswer(answerKey, answerValue);
       });
+    }
+  }
+  checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
+    if (numberOfResponses.indexOf(clickedAnswerKey) < 0) {
+      userAnswers.push({
+        answerKey: clickedAnswerKey,
+        answerValue: clickedAnswerValue,
+      });
+      numberOfResponses.push(clickedAnswerKey);
+    } else {
+      // todo заменить этот костыль
+      userAnswers = [{
+        answerKey: clickedAnswerKey,
+        answerValue: clickedAnswerValue,
+      }];
+    }
+    return numberOfResponses.length;
+  }
+  checkAnswer(answerKey, answerValue) {
+    let isCorrectAnswers;
+    let responseLimit = this.state[`response-limit`];
+    let countOfAnswers = this.checkCountOfAnswers(answerKey, answerValue);
+    if (countOfAnswers === responseLimit) {
+      isCorrectAnswers = userAnswers.every((it) => {
+        return this.state.questions[this.level].answers[it.answerKey][it.answerValue];
+      });
+      this.onAnswer(isCorrectAnswers);
+      numberOfResponses = [];
+      userAnswers = [];
     }
   }
 }
