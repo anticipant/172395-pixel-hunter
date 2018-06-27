@@ -12,7 +12,7 @@ export default class AbstractView {
       return this._element;
     }
     this._element = document.createElement(`div`);
-    this._element = this.render().trim();
+    this._element.innerHTML = this.render().trim();
     this.bind();
     return this._element;
   }
