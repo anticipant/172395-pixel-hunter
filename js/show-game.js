@@ -13,9 +13,7 @@ let countOfImage;
 let gameState;
 let roundKeys;
 let actualRoundKey;
-let numberOfResponses = [];
 let gameAnswers = [];
-let userAnswers = [];
 
 function getCurrentGame(arrayOfGames) {
   currentGame = arrayOfGames.shift();
@@ -24,8 +22,6 @@ function setActualRoundKey() {
   actualRoundKey = roundKeys.shift();
 }
 function showNextRound() {
-  numberOfResponses = [];
-  userAnswers = [];
   setActualRoundKey();
   const gameBlock = document.querySelector(`.game`);
   gameBlock.replaceWith(showLevel(currentGame, actualRoundKey, countOfImage));
