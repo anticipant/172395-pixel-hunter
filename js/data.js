@@ -1,7 +1,10 @@
 export const headerState = {
   lives: 3,
 };
-
+const UserAnswer = {
+  CORRECT: 1,
+  WRONG: 0,
+};
 export const games = [
   {
     'response-limit': 2,
@@ -12,22 +15,41 @@ export const games = [
       'level-1': {
         imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`],
         answers: {
-          'question1': `photo`,
-          'question2': `paint`,
-        }
+          question1: {
+            'photo': UserAnswer.CORRECT,
+            'paint': UserAnswer.WRONG
+          },
+          question2: {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.CORRECT
+          }
+        },
+
       },
       'level-2': {
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`],
         answers: {
-          'question1': `paint`,
-          'question2': `photo`,
+          question1: {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.CORRECT
+          },
+          question2: {
+            'photo': UserAnswer.CORRECT,
+            'paint': UserAnswer.WRONG
+          }
         }
       },
       'level-3': {
         imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`, `https://k32.kn3.net/5C7060EC5.jpg`],
         answers: {
-          'question1': `photo`,
-          'question2': `paint`,
+          question1: {
+            'photo': UserAnswer.CORRECT,
+            'paint': UserAnswer.WRONG
+          },
+          question2: {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.CORRECT
+          }
         }
       },
     }
@@ -41,25 +63,37 @@ export const games = [
       'level-1': {
         imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
         answers: {
-          'question1': `photo`,
+          question1: {
+            'photo': UserAnswer.CORRECT,
+            'paint': UserAnswer.WRONG
+          },
         }
       },
       'level-2': {
         imagesPathArray: [`https://k32.kn3.net/5C7060EC5.jpg`],
         answers: {
-          'question1': `paint`,
+          question1: {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.CORRECT
+          },
         }
       },
       'level-3': {
         imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
         answers: {
-          'question1': `photo`,
+          question1: {
+            'photo': UserAnswer.CORRECT,
+            'paint': UserAnswer.WRONG
+          },
         }
       },
       'level-4': {
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`],
         answers: {
-          'question1': `paint`,
+          question1: {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.CORRECT
+          },
         }
       },
     }
@@ -71,25 +105,52 @@ export const games = [
       'level-1': {
         imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`],
         answers: {
-          'image1': `photo`,
-          'image2': `photo`,
-          'image3': `paint`,
+          'image1': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.WRONG
+          },
+          'image2': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.WRONG
+          },
+          'image3': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.CORRECT
+          },
         }
       },
       'level-2': {
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`, `https://k42.kn3.net/CF42609C8.jpg`],
         answers: {
-          'image1': `photo`,
-          'image2': `photo`,
-          'image3': `paint`,
+          'image1': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.WRONG
+          },
+          'image2': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.WRONG
+          },
+          'image3': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.CORRECT
+          },
         }
       },
       'level-3': {
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`, `https://k42.kn3.net/CF42609C8.jpg`],
         answers: {
-          'image1': `photo`,
-          'image2': `photo`,
-          'image3': `paint`,
+          'image1': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.WRONG
+          },
+          'image2': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.WRONG
+          },
+          'image3': {
+            'photo': UserAnswer.WRONG,
+            'paint': UserAnswer.CORRECT
+          },
         }
       },
     }

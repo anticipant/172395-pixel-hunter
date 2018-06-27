@@ -1,20 +1,10 @@
-import pasteFooter from './footer.js';
+import Footer from './footer-view.js';
 
-export const renderScreen = (template) => {
-  const wrapper = document.createElement(`main`);
-  wrapper.classList.add(`central`);
-  wrapper.innerHTML = template.trim();
-  pasteFooter(wrapper);
-  return wrapper;
-};
-export const getElementFromTemplate = (template) => {
-  const container = document.createElement(`div`);
-  container.innerHTML = template;
-  return container;
-};
-
+const footer = new Footer();
 export const changeScreen = (element) => {
-  const mainElement = document.querySelector(`body`);
+  const mainElement = document.querySelector(`.central`);
   mainElement.innerHTML = ``;
   mainElement.appendChild(element);
+  mainElement.insertAdjacentElement(`beforeend`, footer.element);
 };
+export default changeScreen;

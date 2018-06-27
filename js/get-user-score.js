@@ -1,15 +1,17 @@
-const getUserResult = (answers, lives) => {
-  const Limit = {
-    LIVES: 3,
-    TIME: 30,
-    FAST_TIME: 10,
-    SLOW_TIME: 20,
-  };
-  const Answer = {
-    RIGHT: 100,
-    FAST_BONUS: 50,
-    SLOW_FINE: 50,
-  };
+export const Limit = {
+  LIVES: 3,
+  TIME: 30,
+  FAST_TIME: 10,
+  SLOW_TIME: 20,
+};
+export const Answer = {
+  RIGHT: 100,
+  FAST_BONUS: 50,
+  SLOW_FINE: 50,
+};
+export const getUserResult = (answers, lives) => {
+
+
   const LIVE_BONUS = 50;
   let score = 0;
 
@@ -53,4 +55,3 @@ const getUserResult = (answers, lives) => {
   return score;
 };
 
-export default getUserResult;
