@@ -20,7 +20,7 @@ export default class StatsModuleView extends AbstractView {
       return answer.statsResult === `slow`;
     }).length;
     const correctAnswers = this.answers.filter((answer) => {
-      return answer.statsResult === `correct`;
+      return answer.statsResult === `correct` || answer.statsResult === `fast` || answer.statsResult === `slow`;
     }).length;
     if (this.result < 0) {
       return `<tr>

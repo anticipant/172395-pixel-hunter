@@ -5,15 +5,15 @@ const GameMode = {
   DOUBLE: 2,
   TRIPLE: 3
 };
-let numberOfResponses = [];
-let userAnswers = [];
 
 export default class LevelView extends AbstractView {
-  constructor(state, level, countOfQuestion) {
+  constructor(state, level) {
     super();
     this.state = state;
     this.level = level;
-    this.countOfQuestion = countOfQuestion;
+    this.countOfQuestion = state.questions[level].imagesPathArray.length;
+    this.numberOfResponses = [];
+    this.userAnswers = [];
   }
   render() {
     if (this.countOfQuestion === GameMode.DOUBLE) {
@@ -90,32 +90,32 @@ export default class LevelView extends AbstractView {
     }
   }
   checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
-    if (numberOfResponses.indexOf(clickedAnswerKey) < 0) {
-      userAnswers.push({
+    if (this.numberOfResponses.indexOf(clickedAnswerKey) < 0) {
+      this.userAnswers.push({
         answerKey: clickedAnswerKey,
         answerValue: clickedAnswerValue,
       });
-      numberOfResponses.push(clickedAnswerKey);
+      this.numberOfResponses.push(clickedAnswerKey);
     } else {
       // todo заменить этот костыль
-      userAnswers = [{
+      this.userAnswers = [{
         answerKey: clickedAnswerKey,
         answerValue: clickedAnswerValue,
       }];
     }
-    return numberOfResponses.length;
+    return this.numberOfResponses.length;
   }
   checkAnswer(answerKey, answerValue) {
     let isCorrectAnswers;
     let responseLimit = this.state[`response-limit`];
     let countOfAnswers = this.checkCountOfAnswers(answerKey, answerValue);
     if (countOfAnswers === responseLimit) {
-      isCorrectAnswers = userAnswers.every((it) => {
+      isCorrectAnswers = this.userAnswers.every((it) => {
         return this.state.questions[this.level].answers[it.answerKey][it.answerValue];
       });
       this.onAnswer(isCorrectAnswers);
-      numberOfResponses = [];
-      userAnswers = [];
+      this.numberOfResponses = [];
+      this.userAnswers = [];
     }
   }
 }

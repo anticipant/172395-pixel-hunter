@@ -36,7 +36,7 @@ export const getUserResult = (answers, lives) => {
     if (typeof round.time !== `number`) {
       throw new Error(`time key must be a number`);
     }
-    if (round.time > Limit.TIME || round.time <= 0) {
+    if (round.time > Limit.TIME || round.time < 0) {
       throw new Error(`Number must be greater than 0 less than 30`);
     }
 

@@ -1,108 +1,90 @@
-import {games, headerState} from './data.js';
+import GameModel from './game-model.js';
 import showStatisticScreen from './stats-module.js';
-import {Limit} from './get-user-score.js';
 import LevelView from './level-view.js';
 import changeScreen from './util.js';
 import StatsLevelView from './stats-level-view.js';
 import LevelLevelView from './header-level-view.js';
 
-let responseLimit;
-let gamesArray;
-let currentGame;
-let countOfImage;
-let gameState;
-let roundKeys;
-let actualRoundKey;
-let gameAnswers = [];
+const gameModel = new GameModel();
+const ONE_SECOND = 1000;
+let timer;
+export const tick = (state) => {
+  const time = state.time + 1;
+  return Object.assign({}, state, {
+    time
+  });
+};
+export const resetTimer = (state) => {
+  return Object.assign({}, state, {
+    time: 0,
+  });
+};
+export const stopTimer = () => {
+  clearTimeout(timer);
+};
+const startTimer = () => {
+  timer = setTimeout(() => {
+    gameModel.tick();
+    updateHeader();
+    startTimer();
+  }, ONE_SECOND);
+};
 
-function getCurrentGame(arrayOfGames) {
-  currentGame = arrayOfGames.shift();
-}
-function setActualRoundKey() {
-  actualRoundKey = roundKeys.shift();
-}
 function showNextRound() {
-  setActualRoundKey();
+  gameModel.getActualRoundKey();
   const gameBlock = document.querySelector(`.game`);
-  gameBlock.replaceWith(showLevel(currentGame, actualRoundKey, countOfImage));
+  gameBlock.replaceWith(showLevel(gameModel.currentGame, gameModel.actualRoundKey));
+  updateHeader();
+  startTimer();
 }
-function updateNumberOfLives() {
+function updateHeader() {
   const header = document.querySelector(`.header`);
-  header.replaceWith(showHeader(gameState));
+  header.replaceWith(showHeader(gameModel.state));
 }
-function updateStats(answerResult, timeResult) {
-  let result;
-
-  if (answerResult) {
-    if (timeResult < Limit.FAST_TIME) {
-      result = `fast`;
-    } else if (Limit.TIME >= timeResult && timeResult >= Limit.SLOW_TIME) {
-      result = `slow`;
-    } else {
-      result = `correct`;
-    }
-  } else {
-    result = `wrong`;
-  }
-  gameAnswers.push({answer: answerResult, time: timeResult, statsResult: result});
+function updateStats() {
   const stats = document.querySelector(`div.stats`);
-  stats.replaceWith(showStats(gameAnswers));
+  stats.replaceWith(showStats(gameModel.answers));
 }
-function refreshData(isFirstGame, statsArray, lives) {
+function refreshData(isFirstGame) {
   if (isFirstGame) {
-    gamesArray = games.slice();
-    gameState = Object.assign({}, headerState);
-    gameAnswers = [];
-  } else {
-    gameState = Object.assign({}, lives);
-    gameAnswers = statsArray;
+    gameModel.restart();
   }
-  getCurrentGame(gamesArray);
-  responseLimit = currentGame[`response-limit`];
-  roundKeys = [];
-  for (let key in currentGame.questions) {
-    if (key) {
-      roundKeys.push(key);
-    }
-  }
-  setActualRoundKey();
-  countOfImage = currentGame.questions[actualRoundKey].imagesPathArray.length;
-}
-function isFinished(lives) {
-  if (!lives) {
-    showStatisticScreen(gameAnswers, gameState.lives);
-  }
-}
-function reduceLive(livesState) {
-  livesState.lives = livesState.lives - 1;
-  updateNumberOfLives();
-  isFinished(livesState.lives);
+  gameModel.getGame();
+  gameModel.getRoundKeys();
+  gameModel.getActualRoundKey();
 }
 function checkAnswer(isCorrect) {
+  stopTimer();
+  gameModel.currentAnswer = isCorrect;
+  gameModel.getAnswers();
   if (isCorrect) {
-    updateStats(true, 15);
+    updateStats();
   } else {
-    updateStats(false, 14);
-    reduceLive(gameState);
+    gameModel.reduceLive();
+    updateHeader();
+    updateStats();
+    if (!gameModel.lives) {
+      showStatisticScreen(gameModel.answers, gameModel.lives);
+    }
   }
-  if (gameState.lives) {
-    if (roundKeys.length) {
+  gameModel.resetTimer();
+  if (gameModel.lives) {
+    if (gameModel.isAvailableRound()) {
       showNextRound();
     } else {
-      if (gamesArray.length === 0) {
-        showStatisticScreen(gameAnswers, gameState.lives);
+      if (gameModel.games.length === 0) {
+        showStatisticScreen(gameModel.answers, gameModel.lives);
       } else {
-        showGame(false, gameAnswers, gameState);
+        showGame(false);
       }
     }
   }
 }
 const showHeader = (state) => {
-  const levelLevelView = new LevelLevelView(state);
-  return levelLevelView.element;
+  return new LevelLevelView(state).element;
 };
-const showLevel = (state, level, countOfQuestion) => {
-  const levelView = new LevelView(state, level, countOfQuestion);
+const showLevel = (state, level) => {
+  const levelView = new LevelView(state, level);
   levelView.onAnswer = (isCorrectAnswers) => {
     checkAnswer(isCorrectAnswers);
   };
@@ -112,13 +94,14 @@ const showStats = (answers) => {
   const statsLevelView = new StatsLevelView(answers);
   return statsLevelView.element;
 };
-const showGame = (isFirstGame, statsArray, lives) => {
-  refreshData(isFirstGame, statsArray, lives);
-  changeScreen(showLevel(currentGame, actualRoundKey, countOfImage));
+const showGame = (isFirstGame) => {
+  refreshData(isFirstGame);
+  changeScreen(showLevel(gameModel.currentGame, gameModel.actualRoundKey));
   const container = document.querySelector(`.central`);
   const footer = document.querySelector(`.footer`);
-  container.insertAdjacentElement(`afterbegin`, showHeader(gameState));
-  footer.insertAdjacentElement(`beforeBegin`, showStats(gameAnswers));
+  container.insertAdjacentElement(`afterbegin`, showHeader(gameModel.state));
+  footer.insertAdjacentElement(`beforeBegin`, showStats(gameModel.answers));
+  startTimer();
 };
 
 export default showGame;

@@ -1,4 +1,5 @@
 import changeScreen from './util.js';
+import {stopTimer} from './show-game.js';
 import showGame from './show-game.js';
 import IntroView from './intro-view.js';
 import GreetingView from './greeting-view.js';
@@ -17,6 +18,7 @@ document.addEventListener(`click`, (evt) => {
   let buttonBack = target.closest(`button.back`);
 
   if (buttonBack) {
+    stopTimer();
     changeScreen(greeting.element);
   }
 });

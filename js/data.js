@@ -1,5 +1,6 @@
 export const headerState = {
   lives: 3,
+  time: 0,
 };
 const UserAnswer = {
   CORRECT: 1,
@@ -11,6 +12,7 @@ export const games = [
     'taskTitle': `Угадайте для каждого изображения фото или рисунок?`,
     'buttonsValue': [`photo`, `paint`],
     'buttonsName': [`Фото`, `Рисунок`],
+    'roundKeys': [`level-1`, `level-2`, `level-3`],
     'questions': {
       'level-1': {
         imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`],
@@ -59,6 +61,7 @@ export const games = [
     'taskTitle': `Угадай, фото или рисунок?`,
     'buttonsValue': [`photo`, `paint`],
     'buttonsName': [`Фото`, `Рисунок`],
+    'roundKeys': [`level-1`, `level-2`, `level-3`, `level-4`],
     'questions': {
       'level-1': {
         imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
@@ -101,6 +104,7 @@ export const games = [
   {
     'response-limit': 1,
     'taskTitle': `Найдите рисунок среди изображений`,
+    'roundKeys': [`level-1`, `level-2`, `level-3`],
     'questions': {
       'level-1': {
         imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`],
