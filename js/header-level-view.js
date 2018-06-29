@@ -23,11 +23,9 @@ export default class HeaderLevelView extends AbstractView {
     </div>
   </header>`;
   }
-  onBackButtonClick(){}
   bind() {
     const showScreenTrigger = this.element.querySelector(`button.back`);
     showScreenTrigger.addEventListener(`click`, () => {
-      this.onBackButtonClick()
     });
   }
 }

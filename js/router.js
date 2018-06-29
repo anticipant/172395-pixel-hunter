@@ -19,7 +19,7 @@ export default class Router {
   }
   static showRules() {
     const rules = new RulesView();
-    changeScreen(rules.element)
+    changeScreen(rules.element);
   }
   static showGameScreen(isFirstGame) {
     const gameScreen = new GameScreen(new GameModel());

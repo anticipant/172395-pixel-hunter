@@ -6,7 +6,7 @@ const getActualRoundKey = (roundKeys) => {
   return roundKeys.shift();
 };
 const getRoundKeys = (currentGame) => {
-  return currentGame[`roundKeys`].slice()
+  return currentGame[`roundKeys`].slice();
 };
 const reduceLive = (state) => {
   const lives = state.lives - 1;
@@ -73,10 +73,10 @@ export default class GameModel {
   }
   getAnswers() {
     this._answers.push(setAnswers(this._currentAnswer, this._state.time));
-  };
+  }
   set currentAnswer(answerResult) {
     this._currentAnswer = answerResult;
-  };
+  }
   restart() {
     this._games = games.slice();
     this._state = Object.assign({}, headerState);
@@ -89,10 +89,10 @@ export default class GameModel {
     return this._roundKeys.length > 0;
   }
   getRoundKeys() {
-    this._roundKeys =  getRoundKeys(this._currentGame);
+    this._roundKeys = getRoundKeys(this._currentGame);
   }
   getActualRoundKey() {
-    this._actualRoundKey =  getActualRoundKey(this._roundKeys);
+    this._actualRoundKey = getActualRoundKey(this._roundKeys);
   }
   resetTimer() {
     this._state = resetTimer(this._state);

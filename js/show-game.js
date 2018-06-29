@@ -117,7 +117,7 @@ export default class GameScreen {
   }
   showGame(isFirstGame) {
     this.refreshData(isFirstGame);
-    if(isFirstGame) {
+    if (isFirstGame) {
       this.updateHeader();
       this.updateStats();
     }
