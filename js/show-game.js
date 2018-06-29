@@ -1,4 +1,5 @@
 import Router from './router.js';
+import RestartModalView from './restart-modal-view.js';
 import LevelView from './level-view.js';
 import StatsLevelView from './stats-level-view.js';
 import HeaderLevelView from './header-level-view.js';
@@ -8,10 +9,29 @@ const ONE_SECOND = 1000;
 export default class GameScreen {
   constructor(model) {
     this.model = model;
+    this.restartModal = new RestartModalView();
+    this.restartModal.onConfirm = () => {
+      this.stopTimer();
+      Router.showGreeting();
+    };
+    this.getHandler(this.restartModal);
     this.header = new HeaderLevelView(this.model.state);
     this.stats = new StatsLevelView(this.model.answers);
     this._interval = null;
     this.addListener();
+
+  }
+
+  getHandler(setThis) {
+    this.onButtonBackClick = function (evt) {
+      let target = evt.target;
+      let buttonBack = target.closest(`button.back`);
+
+      if (buttonBack) {
+        const container = document.querySelector(`.central`);
+        container.insertAdjacentElement(`beforeBegin`, setThis.element);
+      }
+    };
   }
   stopTimer() {
     clearInterval(this._interval);
@@ -74,6 +94,7 @@ export default class GameScreen {
       this.updateHeader();
       this.updateStats();
       if (!this.model.lives) {
+        this.removeListener();
         Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
       }
     }
@@ -83,6 +104,7 @@ export default class GameScreen {
         this.showNextRound();
       } else {
         if (this.model.games.length === 0) {
+          this.removeListener();
           Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
         } else {
           this.showGame(false);
@@ -98,16 +120,12 @@ export default class GameScreen {
     this.model.getRoundKeys();
     this.model.getActualRoundKey();
   }
-  addListener() {
-    document.addEventListener(`click`, (evt) => {
-      let target = evt.target;
-      let buttonBack = target.closest(`button.back`);
 
-      if (buttonBack) {
-        this.stopTimer();
-        Router.showGreeting();
-      }
-    });
+  addListener() {
+    document.addEventListener(`click`, this.onButtonBackClick);
+  }
+  removeListener() {
+    document.removeEventListener(`click`, this.onButtonBackClick);
   }
   showNextRound() {
     this.model.getActualRoundKey();

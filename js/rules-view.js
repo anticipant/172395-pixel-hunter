@@ -37,9 +37,15 @@ export default class RulesView extends AbstractVIew {
       showScreenTrigger.disabled = !(evt.target.value.length > 0);
     });
     const showScreenTrigger = this.element.querySelector(`.rules__button`);
+
     showScreenTrigger.addEventListener(`click`, (evt) => {
       evt.preventDefault();
       Router.showGameScreen(true);
     });
+    const buttonBack = this.element.querySelector(`button.back`);
+    buttonBack.addEventListener(`click`, () => {
+      Router.showGreeting();
+    });
+
   }
 }

@@ -1,4 +1,6 @@
 import AbstractView from './abstract-view.js';
+import Router from './router.js';
+
 const Bonus = {
   FAST: 50,
   SLOW: -50,
@@ -149,5 +151,11 @@ export default class StatsModuleView extends AbstractView {
       </tr>
     </table>
   </div>`;
+  }
+  bind() {
+    const buttonBack = this.element.querySelector(`button.back`);
+    buttonBack.addEventListener(`click`, () => {
+      Router.showGreeting();
+    });
   }
 }

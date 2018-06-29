@@ -23,9 +23,9 @@ export default class HeaderLevelView extends AbstractView {
     </div>
   </header>`;
   }
-  bind() {
-    const showScreenTrigger = this.element.querySelector(`button.back`);
-    showScreenTrigger.addEventListener(`click`, () => {
-    });
-  }
+  // bind() {
+  //   const showScreenTrigger = this.element.querySelector(`button.back`);
+  //   showScreenTrigger.addEventListener(`click`, () => {
+  //   });
+  // }
 }
