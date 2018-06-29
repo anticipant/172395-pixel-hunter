@@ -1,4 +1,5 @@
 import AbstractVIew from './abstract-view.js';
+import Router from './router.js';
 
 export default class RulesView extends AbstractVIew {
   constructor() {
@@ -30,7 +31,6 @@ export default class RulesView extends AbstractVIew {
     </form>
   </div>`;
   }
-  onClick() {}
   bind() {
     const rulesInput = this.element.querySelector(`.rules__input`);
     rulesInput.addEventListener(`keyup`, (evt) => {
@@ -39,7 +39,7 @@ export default class RulesView extends AbstractVIew {
     const showScreenTrigger = this.element.querySelector(`.rules__button`);
     showScreenTrigger.addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      this.onClick();
+      Router.showGameScreen(true);
     });
   }
 }

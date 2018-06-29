@@ -1,7 +1,7 @@
 import AbstractView from './abstract-view.js';
 import {Limit} from './get-user-score.js';
 
-export default class LevelLevelView extends AbstractView {
+export default class HeaderLevelView extends AbstractView {
   constructor(state) {
     super();
     this.state = state;
@@ -22,5 +22,12 @@ export default class LevelLevelView extends AbstractView {
       .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
     </div>
   </header>`;
+  }
+  onBackButtonClick(){}
+  bind() {
+    const showScreenTrigger = this.element.querySelector(`button.back`);
+    showScreenTrigger.addEventListener(`click`, () => {
+      this.onBackButtonClick()
+    });
   }
 }

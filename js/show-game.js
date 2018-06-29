@@ -1,107 +1,129 @@
-import GameModel from './game-model.js';
-import showStatisticScreen from './stats-module.js';
+import Router from './router.js';
 import LevelView from './level-view.js';
-import changeScreen from './util.js';
 import StatsLevelView from './stats-level-view.js';
-import LevelLevelView from './header-level-view.js';
+import HeaderLevelView from './header-level-view.js';
+import Footer from './footer-view.js';
 
-const gameModel = new GameModel();
 const ONE_SECOND = 1000;
-let timer;
-export const tick = (state) => {
-  const time = state.time + 1;
-  return Object.assign({}, state, {
-    time
-  });
-};
-export const resetTimer = (state) => {
-  return Object.assign({}, state, {
-    time: 0,
-  });
-};
-export const stopTimer = () => {
-  clearTimeout(timer);
-};
-const startTimer = () => {
-  timer = setTimeout(() => {
-    gameModel.tick();
-    updateHeader();
-    startTimer();
-  }, ONE_SECOND);
-};
-
-function showNextRound() {
-  gameModel.getActualRoundKey();
-  const gameBlock = document.querySelector(`.game`);
-  gameBlock.replaceWith(showLevel(gameModel.currentGame, gameModel.actualRoundKey));
-  updateHeader();
-  startTimer();
-}
-function updateHeader() {
-  const header = document.querySelector(`.header`);
-  header.replaceWith(showHeader(gameModel.state));
-}
-function updateStats() {
-  const stats = document.querySelector(`div.stats`);
-  stats.replaceWith(showStats(gameModel.answers));
-}
-function refreshData(isFirstGame) {
-  if (isFirstGame) {
-    gameModel.restart();
+export default class GameScreen {
+  constructor(model) {
+    this.model = model;
+    this.header = new HeaderLevelView(this.model.state);
+    this.stats = new StatsLevelView(this.model.answers);
+    this._interval = null;
+    this.addListener();
   }
-  gameModel.getGame();
-  gameModel.getRoundKeys();
-  gameModel.getActualRoundKey();
-}
-function checkAnswer(isCorrect) {
-  stopTimer();
-  gameModel.currentAnswer = isCorrect;
-  gameModel.getAnswers();
-  if (isCorrect) {
-    updateStats();
-  } else {
-    gameModel.reduceLive();
-    updateHeader();
-    updateStats();
-    if (!gameModel.lives) {
-      showStatisticScreen(gameModel.answers, gameModel.lives);
-    }
+  stopTimer() {
+    clearInterval(this._interval);
   }
-  gameModel.resetTimer();
-  if (gameModel.lives) {
-    if (gameModel.isAvailableRound()) {
-      showNextRound();
+  resetTimer() {
+    this.model.resetTimer();
+  }
+  startTimer() {
+    this._interval = setTimeout(() => {
+      this.model.tick();
+      this.updateHeader();
+      this.startTimer();
+    }, ONE_SECOND);
+  }
+  updateStats() {
+    const stats = new StatsLevelView(this.model.answers);
+    this.stats.element.replaceWith(stats.element);
+    this.stats = stats;
+  }
+  getStats() {
+    const footer = document.querySelector(`.footer`);
+    footer.insertAdjacentElement(`beforeBegin`, this.stats.element);
+  }
+  updateHeader() {
+    const header = new HeaderLevelView(this.model.state);
+    this.header.element.replaceWith(header.element);
+    this.header = header;
+  }
+  getHeader() {
+    const container = document.querySelector(`.central`);
+    container.insertAdjacentElement(`afterbegin`, this.header.element);
+  }
+  updateGameBody() {
+    const gameBody = new LevelView(this.model.currentGame, this.model.actualRoundKey);
+    gameBody.onAnswer = (isCorrectAnswers) => {
+      this.checkAnswer(isCorrectAnswers);
+    };
+    this.level.element.replaceWith(gameBody.element);
+    this.level = gameBody;
+  }
+  getGameBody() {
+    const footer = new Footer();
+    const mainElement = document.querySelector(`.central`);
+    this.level = new LevelView(this.model.currentGame, this.model.actualRoundKey);
+    this.level.onAnswer = (isCorrectAnswers) => {
+      this.checkAnswer(isCorrectAnswers);
+    };
+    mainElement.innerHTML = ``;
+    mainElement.appendChild(this.level.element);
+    mainElement.insertAdjacentElement(`beforeend`, footer.element);
+  }
+  checkAnswer(isCorrect) {
+    this.stopTimer();
+    this.model.currentAnswer = isCorrect;
+    this.model.getAnswers();
+    if (isCorrect) {
+      this.updateStats();
     } else {
-      if (gameModel.games.length === 0) {
-        showStatisticScreen(gameModel.answers, gameModel.lives);
+      this.model.reduceLive();
+      this.updateHeader();
+      this.updateStats();
+      if (!this.model.lives) {
+        Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
+      }
+    }
+    this.resetTimer();
+    if (this.model.lives) {
+      if (this.model.isAvailableRound()) {
+        this.showNextRound();
       } else {
-        showGame(false);
+        if (this.model.games.length === 0) {
+          Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
+        } else {
+          this.showGame(false);
+        }
       }
     }
   }
-}
-const showHeader = (state) => {
-  return new LevelLevelView(state).element;
-};
-const showLevel = (state, level) => {
-  const levelView = new LevelView(state, level);
-  levelView.onAnswer = (isCorrectAnswers) => {
-    checkAnswer(isCorrectAnswers);
-  };
-  return levelView.element;
-};
-const showStats = (answers) => {
-  const statsLevelView = new StatsLevelView(answers);
-  return statsLevelView.element;
-};
-const showGame = (isFirstGame) => {
-  refreshData(isFirstGame);
-  changeScreen(showLevel(gameModel.currentGame, gameModel.actualRoundKey));
-  const container = document.querySelector(`.central`);
-  const footer = document.querySelector(`.footer`);
-  container.insertAdjacentElement(`afterbegin`, showHeader(gameModel.state));
-  footer.insertAdjacentElement(`beforeBegin`, showStats(gameModel.answers));
-  startTimer();
-};
+  refreshData(isFirstGame) {
+    if (isFirstGame) {
+      this.model.restart();
+    }
+    this.model.getGame();
+    this.model.getRoundKeys();
+    this.model.getActualRoundKey();
+  }
+  addListener() {
+    document.addEventListener(`click`, (evt) => {
+      let target = evt.target;
+      let buttonBack = target.closest(`button.back`);
 
-export default showGame;
+      if (buttonBack) {
+        this.stopTimer();
+        Router.showGreeting();
+      }
+    });
+  }
+  showNextRound() {
+    this.model.getActualRoundKey();
+    this.updateGameBody();
+    this.updateHeader();
+    this.startTimer();
+  }
+  showGame(isFirstGame) {
+    this.refreshData(isFirstGame);
+    if(isFirstGame) {
+      this.updateHeader();
+      this.updateStats();
+    }
+    this.getGameBody();
+    this.getHeader();
+    this.getStats();
+    this.startTimer();
+  }
+}

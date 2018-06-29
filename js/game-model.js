@@ -1,6 +1,6 @@
 import {games, headerState} from './data.js';
 import {Limit} from './get-user-score.js';
-import {tick, resetTimer} from './show-game.js';
+import {getUserResult} from './get-user-score.js';
 
 const getActualRoundKey = (roundKeys) => {
   return roundKeys.shift();
@@ -31,7 +31,17 @@ const setAnswers = (answerResult, timeResult) => {
   return {answer: answerResult, time: timeResult, statsResult: result};
 
 };
-
+const tick = (state) => {
+  const time = state.time + 1;
+  return Object.assign({}, state, {
+    time
+  });
+};
+const resetTimer = (state) => {
+  return Object.assign({}, state, {
+    time: 0,
+  });
+};
 
 export default class GameModel {
   constructor() {
@@ -58,6 +68,9 @@ export default class GameModel {
   get answers() {
     return this._answers;
   }
+  get userResult() {
+    return getUserResult(this._answers, this._state.lives);
+  }
   getAnswers() {
     this._answers.push(setAnswers(this._currentAnswer, this._state.time));
   };
@@ -67,11 +80,7 @@ export default class GameModel {
   restart() {
     this._games = games.slice();
     this._state = Object.assign({}, headerState);
-    this._currentGame;
-    this._roundKeys;
-    this._actualRoundKey;
     this._answers = [];
-    this._currentAnswer;
   }
   reduceLive() {
     this._state = reduceLive(this._state);

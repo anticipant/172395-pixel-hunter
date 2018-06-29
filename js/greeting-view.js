@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view.js';
+import Router from './router.js';
 
 export default class GreetingView extends AbstractView {
   constructor() {
@@ -17,11 +18,10 @@ export default class GreetingView extends AbstractView {
               </div>
             <div class="greeting__continue"><span><img src="img/arrow_right.svg" width="64" height="64" alt="Next"></span></div>`;
   }
-  onClick() {}
   bind() {
     const showScreenTrigger = this.element.querySelector(`.greeting__continue`);
     showScreenTrigger.addEventListener(`click`, () => {
-      this.onClick();
+      Router.showRules();
     });
   }
   get element() {
