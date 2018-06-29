@@ -2,12 +2,6 @@ import {games, headerState} from './data.js';
 import {Limit} from './get-user-score.js';
 import {getUserResult} from './get-user-score.js';
 
-const getActualRoundKey = (roundKeys) => {
-  return roundKeys.shift();
-};
-const getRoundKeys = (currentGame) => {
-  return currentGame[`roundKeys`].slice();
-};
 const reduceLive = (state) => {
   const lives = state.lives - 1;
   return Object.assign({}, state, {
@@ -89,10 +83,10 @@ export default class GameModel {
     return this._roundKeys.length > 0;
   }
   getRoundKeys() {
-    this._roundKeys = getRoundKeys(this._currentGame);
+    this._roundKeys = this._currentGame[`roundKeys`].slice();
   }
   getActualRoundKey() {
-    this._actualRoundKey = getActualRoundKey(this._roundKeys);
+    this._actualRoundKey = this._roundKeys.shift();
   }
   resetTimer() {
     this._state = resetTimer(this._state);
