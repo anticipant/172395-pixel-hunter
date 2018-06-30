@@ -66,7 +66,6 @@ export default class GameModel {
     this._currentAnswer = answerResult;
   }
   restart() {
-    this._games = games.slice();
     this._questions = questions.slice();
     this._state = Object.assign({}, headerState);
     this._answers = [];
