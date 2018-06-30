@@ -1,11 +1,18 @@
 import Router from './router.js';
 import RestartModalView from './restart-modal-view.js';
-import LevelView from './level-view.js';
+import GameViewFirst from './game-view-1.js';
+import GameViewSecond from './game-view-2.js';
+import GameViewThird from './game-view-3.js';
 import StatsLevelView from './stats-level-view.js';
 import HeaderLevelView from './header-level-view.js';
 import Footer from './footer-view.js';
 
 const ONE_SECOND = 1000;
+const GameMode = {
+  SINGLE: 1,
+  DOUBLE: 2,
+  TRIPLE: 3
+};
 export default class GameScreen {
   constructor(model) {
     this.model = model;
@@ -19,9 +26,7 @@ export default class GameScreen {
     this.stats = new StatsLevelView(this.model.answers);
     this._interval = null;
     this.addListener();
-
   }
-
   getHandler(setThis) {
     this.onButtonBackClick = function (evt) {
       let target = evt.target;
@@ -64,8 +69,23 @@ export default class GameScreen {
     const container = document.querySelector(`.central`);
     container.insertAdjacentElement(`afterbegin`, this.header.element);
   }
+  getGameModeView(countOfQuestions) {
+    let result;
+    switch (countOfQuestions) {
+      case GameMode.SINGLE :
+        result = new GameViewSecond(this.model.currentActualQuestion);
+        break;
+      case GameMode.DOUBLE :
+        result = new GameViewFirst(this.model.currentActualQuestion);
+        break;
+      case GameMode.TRIPLE :
+        result = new GameViewThird(this.model.currentActualQuestion);
+        break;
+    }
+    return result;
+  }
   updateGameBody() {
-    const gameBody = new LevelView(this.model.currentActualQuestion);
+    let gameBody = this.getGameModeView(this.model.currentActualQuestion.imagesPathArray.length);
     gameBody.onAnswer = (isCorrectAnswers) => {
       this.checkAnswer(isCorrectAnswers);
     };
@@ -75,13 +95,17 @@ export default class GameScreen {
   getGameBody() {
     const footer = new Footer();
     const mainElement = document.querySelector(`.central`);
-    this.level = new LevelView(this.model.currentActualQuestion);
+    this.level = this.getGameModeView(this.model.currentActualQuestion.imagesPathArray.length);
     this.level.onAnswer = (isCorrectAnswers) => {
       this.checkAnswer(isCorrectAnswers);
     };
     mainElement.innerHTML = ``;
     mainElement.appendChild(this.level.element);
     mainElement.insertAdjacentElement(`beforeend`, footer.element);
+  }
+  showStatsView() {
+    this.removeListener();
+    Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
   }
   checkAnswer(isCorrect) {
     this.stopTimer();
@@ -93,18 +117,14 @@ export default class GameScreen {
       this.model.reduceLive();
       this.updateHeader();
       if (!this.model.lives) {
-        this.removeListener();
-        Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
+        this.showStatsView();
       }
     }
     this.resetTimer();
-    if (this.model.lives) {
-      if (this.model.isStillQuestion()) {
-        this.showNextRound();
-      } else {
-        this.removeListener();
-        Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
-      }
+    if (this.model.isStillQuestion()) {
+      this.showGame();
+    } else {
+      this.showStatsView();
     }
   }
   refreshData(isFirstGame) {
@@ -119,17 +139,16 @@ export default class GameScreen {
   removeListener() {
     document.removeEventListener(`click`, this.onButtonBackClick);
   }
-  showNextRound() {
-    this.refreshData();
-    this.updateGameBody();
-    this.updateHeader();
-    this.startTimer();
-  }
   showGame(isFirstGame) {
     this.refreshData(isFirstGame);
-    this.getGameBody();
-    this.getHeader();
-    this.getStats();
+    if (isFirstGame) {
+      this.getGameBody();
+      this.getHeader();
+      this.getStats();
+    } else {
+      this.updateGameBody();
+      this.updateHeader();
+    }
     this.startTimer();
   }
 }

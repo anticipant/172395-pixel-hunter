@@ -74,7 +74,7 @@ export default class GameModel {
     this._state = reduceLive(this._state);
   }
   getActualQuestion() {
-    this._actualQuestion = this._questions.shift()
+    this._actualQuestion = this._questions.shift();
   }
   isStillQuestion() {
     return this._questions.length > 0;
