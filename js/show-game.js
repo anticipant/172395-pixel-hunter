@@ -87,12 +87,11 @@ export default class GameScreen {
     this.stopTimer();
     this.model.currentAnswer = isCorrect;
     this.model.getAnswers();
-    if (isCorrect) {
-      this.updateStats();
-    } else {
+
+    this.updateStats();
+    if (!isCorrect) {
       this.model.reduceLive();
       this.updateHeader();
-      this.updateStats();
       if (!this.model.lives) {
         this.removeListener();
         Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
@@ -100,17 +99,11 @@ export default class GameScreen {
     }
     this.resetTimer();
     if (this.model.lives) {
-      // если вопросы еще есть
       if (this.model.isStillQuestion()) {
         this.showNextRound();
       } else {
-        // если вопросы закончились
-        if (this.model.questions.length === 0) {
-          this.removeListener();
-          Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
-        } else {
-          this.showGame(false);
-        }
+        this.removeListener();
+        Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
       }
     }
   }
@@ -120,7 +113,6 @@ export default class GameScreen {
     }
     this.model.getActualQuestion();
   }
-
   addListener() {
     document.addEventListener(`click`, this.onButtonBackClick);
   }
@@ -128,17 +120,13 @@ export default class GameScreen {
     document.removeEventListener(`click`, this.onButtonBackClick);
   }
   showNextRound() {
-    this.model.getActualQuestion();
+    this.refreshData();
     this.updateGameBody();
     this.updateHeader();
     this.startTimer();
   }
   showGame(isFirstGame) {
     this.refreshData(isFirstGame);
-    if (isFirstGame) {
-      this.updateHeader();
-      this.updateStats();
-    }
     this.getGameBody();
     this.getHeader();
     this.getStats();

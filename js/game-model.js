@@ -44,9 +44,6 @@ export default class GameModel {
   get state() {
     return this._state;
   }
-  get questions() {
-    return this._questions;
-  }
   get lives() {
     return this._state.lives;
   }
