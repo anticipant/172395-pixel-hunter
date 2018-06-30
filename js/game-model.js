@@ -1,4 +1,4 @@
-import {games, headerState} from './data.js';
+import {questions, headerState} from './data.js';
 import {Limit} from './get-user-score.js';
 import {getUserResult} from './get-user-score.js';
 
@@ -44,8 +44,8 @@ export default class GameModel {
   get state() {
     return this._state;
   }
-  get games() {
-    return this._games;
+  get questions() {
+    return this._questions;
   }
   get lives() {
     return this._state.lives;
@@ -53,11 +53,8 @@ export default class GameModel {
   get time() {
     return this._state.time;
   }
-  get currentGame() {
-    return this._currentGame;
-  }
-  get actualRoundKey() {
-    return this._actualRoundKey;
+  get currentActualQuestion() {
+    return this._actualQuestion;
   }
   get answers() {
     return this._answers;
@@ -65,36 +62,31 @@ export default class GameModel {
   get userResult() {
     return getUserResult(this._answers, this._state.lives);
   }
-  getAnswers() {
-    this._answers.push(setAnswers(this._currentAnswer, this._state.time));
-  }
   set currentAnswer(answerResult) {
     this._currentAnswer = answerResult;
   }
   restart() {
     this._games = games.slice();
+    this._questions = questions.slice();
     this._state = Object.assign({}, headerState);
     this._answers = [];
+  }
+  getAnswers() {
+    this._answers.push(setAnswers(this._currentAnswer, this._state.time));
   }
   reduceLive() {
     this._state = reduceLive(this._state);
   }
-  isAvailableRound() {
-    return this._roundKeys.length > 0;
+  getActualQuestion() {
+    this._actualQuestion = this._questions.shift()
   }
-  getRoundKeys() {
-    this._roundKeys = this._currentGame[`roundKeys`].slice();
-  }
-  getActualRoundKey() {
-    this._actualRoundKey = this._roundKeys.shift();
+  isStillQuestion() {
+    return this._questions.length > 0;
   }
   resetTimer() {
     this._state = resetTimer(this._state);
   }
   tick() {
     this._state = tick(this._state);
-  }
-  getGame() {
-    this._currentGame = this._games.shift();
   }
 }

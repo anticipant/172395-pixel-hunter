@@ -6,15 +6,9 @@ const UserAnswer = {
   CORRECT: 1,
   WRONG: 0,
 };
-export const games = [
+export const questions = [
   {
-    'response-limit': 2,
-    'taskTitle': `Угадайте для каждого изображения фото или рисунок?`,
-    'buttonsValue': [`photo`, `paint`],
-    'buttonsName': [`Фото`, `Рисунок`],
-    'roundKeys': [`level-1`, `level-2`, `level-3`],
-    'questions': {
-      'level-1': {
+        title: `Угадайте для каждого изображения фото или рисунок?`,
         imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`],
         answers: {
           question1: {
@@ -28,7 +22,8 @@ export const games = [
         },
 
       },
-      'level-2': {
+  {
+        title: `Угадайте для каждого изображения фото или рисунок?`,
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`],
         answers: {
           question1: {
@@ -41,7 +36,8 @@ export const games = [
           }
         }
       },
-      'level-3': {
+  {
+        title: `Угадайте для каждого изображения фото или рисунок?`,
         imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`, `https://k32.kn3.net/5C7060EC5.jpg`],
         answers: {
           question1: {
@@ -54,16 +50,8 @@ export const games = [
           }
         }
       },
-    }
-  },
   {
-    'response-limit': 1,
-    'taskTitle': `Угадай, фото или рисунок?`,
-    'buttonsValue': [`photo`, `paint`],
-    'buttonsName': [`Фото`, `Рисунок`],
-    'roundKeys': [`level-1`, `level-2`, `level-3`, `level-4`],
-    'questions': {
-      'level-1': {
+        title: `Угадай, фото или рисунок?`,
         imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
         answers: {
           question1: {
@@ -72,7 +60,8 @@ export const games = [
           },
         }
       },
-      'level-2': {
+  {
+        title: `Угадай, фото или рисунок?`,
         imagesPathArray: [`https://k32.kn3.net/5C7060EC5.jpg`],
         answers: {
           question1: {
@@ -81,7 +70,8 @@ export const games = [
           },
         }
       },
-      'level-3': {
+  {
+        title: `Угадай, фото или рисунок?`,
         imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
         answers: {
           question1: {
@@ -90,7 +80,8 @@ export const games = [
           },
         }
       },
-      'level-4': {
+  {
+        title: `Угадай, фото или рисунок?`,
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`],
         answers: {
           question1: {
@@ -99,14 +90,8 @@ export const games = [
           },
         }
       },
-    }
-  },
   {
-    'response-limit': 1,
-    'taskTitle': `Найдите рисунок среди изображений`,
-    'roundKeys': [`level-1`, `level-2`, `level-3`],
-    'questions': {
-      'level-1': {
+        title: `Найдите рисунок среди изображений`,
         imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`],
         answers: {
           'image1': {
@@ -123,7 +108,8 @@ export const games = [
           },
         }
       },
-      'level-2': {
+  {
+        title: `Найдите рисунок среди изображений`,
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`, `https://k42.kn3.net/CF42609C8.jpg`],
         answers: {
           'image1': {
@@ -140,7 +126,8 @@ export const games = [
           },
         }
       },
-      'level-3': {
+  {
+        title: `Найдите рисунок среди изображений`,
         imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`, `https://k42.kn3.net/CF42609C8.jpg`],
         answers: {
           'image1': {
@@ -157,6 +144,4 @@ export const games = [
           },
         }
       },
-    }
-  }
 ];

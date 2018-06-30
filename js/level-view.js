@@ -5,13 +5,16 @@ const GameMode = {
   DOUBLE: 2,
   TRIPLE: 3
 };
+const MinNumberAnswers = {
+  ONE: 1,
+  TWO: 2,
+};
 
 export default class LevelView extends AbstractView {
-  constructor(state, level) {
+  constructor(question) {
     super();
-    this.state = state;
-    this.level = level;
-    this.countOfQuestion = state.questions[level].imagesPathArray.length;
+    this.question = question;
+    this.countOfQuestion = question.imagesPathArray.length;
     this.numberOfResponses = [];
     this.userAnswers = [];
   }
@@ -19,18 +22,18 @@ export default class LevelView extends AbstractView {
     if (this.countOfQuestion === GameMode.DOUBLE) {
       return `
   <div class="game">
-    <p class="game__task">${this.state.taskTitle}</p>
+    <p class="game__task">${this.question.title}</p>
     <form class="game__content">
-    ${this.state.questions[this.level].imagesPathArray.map((it, index) => `
+    ${this.question.imagesPathArray.map((it, index) => `
         <div class="game__option">
         <img src="${it}" alt="Option ${index + 1}" width="468" height="458">
         <label class="game__answer game__answer--photo">
-          <input name="question${index + 1}" type="radio" value="${this.state.buttonsValue[0]}">
-          <span>${this.state.buttonsName[0]}</span>
+          <input name="question${index + 1}" type="radio" value="photo">
+          <span>Фото</span>
         </label>
         <label class="game__answer game__answer--paint">
-          <input name="question${index + 1}" type="radio" value="${this.state.buttonsValue[1]}">
-          <span>${this.state.buttonsName[1]}</span>
+          <input name="question${index + 1}" type="radio" value="paint">
+          <span>Рисунок</span>
         </label>
       </div>`).join(``)}
     </form>
@@ -38,18 +41,18 @@ export default class LevelView extends AbstractView {
     } else if (this.countOfQuestion === GameMode.SINGLE) {
       return `
   <div class="game">
-    <p class="game__task">${this.state.taskTitle}</p>
+    <p class="game__task">${this.question.title}</p>
     <form class="game__content  game__content--wide">
-    ${this.state.questions[this.level].imagesPathArray.map((it, index) => `
+    ${this.question.imagesPathArray.map((it, index) => `
       <div class="game__option">
-        <img src="${this.state.questions[this.level].imagesPathArray}" alt="Option ${index + 1}" width="705" height="455">
+        <img src="${this.question.imagesPathArray}" alt="Option ${index + 1}" width="705" height="455">
         <label class="game__answer  game__answer--photo">
-          <input name="question${index + 1}" type="radio" value="${this.state.buttonsValue[0]}">
-          <span>${this.state.buttonsName[0]}</span>
+          <input name="question${index + 1}" type="radio" value="photo">
+          <span>Фото</span>
         </label>
         <label class="game__answer  game__answer--wide  game__answer--paint">
-          <input name="question${index + 1}" type="radio" value="${this.state.buttonsValue[1]}">
-          <span>${this.state.buttonsName[1]}</span>
+          <input name="question${index + 1}" type="radio" value="paint">
+          <span>Рисунок</span>
         </label>
       </div>`).join(``)}
     </form>
@@ -57,9 +60,9 @@ export default class LevelView extends AbstractView {
     } else if (this.countOfQuestion === GameMode.TRIPLE) {
       return `
   <div class="game">
-      <p class="game__task">${this.state.taskTitle}</p>
+      <p class="game__task">${this.question.title}</p>
       <form class="game__content  game__content--triple">
-      ${this.state.questions[this.level].imagesPathArray.map((it, index) => `
+      ${this.question.imagesPathArray.map((it, index) => `
           <div class="game__option">
             <img src="${it}" data-name="image${index + 1}" alt="Option 1" width="304" height="455">
           </div>`).join(``)}
@@ -107,11 +110,11 @@ export default class LevelView extends AbstractView {
   }
   checkAnswer(answerKey, answerValue) {
     let isCorrectAnswers;
-    let responseLimit = this.state[`response-limit`];
+    let responseLimit = this.countOfQuestion === GameMode.DOUBLE ? MinNumberAnswers.TWO : MinNumberAnswers.ONE;
     let countOfAnswers = this.checkCountOfAnswers(answerKey, answerValue);
     if (countOfAnswers === responseLimit) {
       isCorrectAnswers = this.userAnswers.every((it) => {
-        return this.state.questions[this.level].answers[it.answerKey][it.answerValue];
+        return this.question.answers[it.answerKey][it.answerValue];
       });
       this.onAnswer(isCorrectAnswers);
       this.numberOfResponses = [];

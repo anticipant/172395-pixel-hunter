@@ -65,7 +65,7 @@ export default class GameScreen {
     container.insertAdjacentElement(`afterbegin`, this.header.element);
   }
   updateGameBody() {
-    const gameBody = new LevelView(this.model.currentGame, this.model.actualRoundKey);
+    const gameBody = new LevelView(this.model.currentActualQuestion);
     gameBody.onAnswer = (isCorrectAnswers) => {
       this.checkAnswer(isCorrectAnswers);
     };
@@ -75,7 +75,7 @@ export default class GameScreen {
   getGameBody() {
     const footer = new Footer();
     const mainElement = document.querySelector(`.central`);
-    this.level = new LevelView(this.model.currentGame, this.model.actualRoundKey);
+    this.level = new LevelView(this.model.currentActualQuestion);
     this.level.onAnswer = (isCorrectAnswers) => {
       this.checkAnswer(isCorrectAnswers);
     };
@@ -100,10 +100,12 @@ export default class GameScreen {
     }
     this.resetTimer();
     if (this.model.lives) {
-      if (this.model.isAvailableRound()) {
+      // если вопросы еще есть
+      if (this.model.isStillQuestion()) {
         this.showNextRound();
       } else {
-        if (this.model.games.length === 0) {
+        // если вопросы закончились
+        if (this.model.questions.length === 0) {
           this.removeListener();
           Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
         } else {
@@ -116,9 +118,7 @@ export default class GameScreen {
     if (isFirstGame) {
       this.model.restart();
     }
-    this.model.getGame();
-    this.model.getRoundKeys();
-    this.model.getActualRoundKey();
+    this.model.getActualQuestion();
   }
 
   addListener() {
@@ -128,7 +128,7 @@ export default class GameScreen {
     document.removeEventListener(`click`, this.onButtonBackClick);
   }
   showNextRound() {
-    this.model.getActualRoundKey();
+    this.model.getActualQuestion();
     this.updateGameBody();
     this.updateHeader();
     this.startTimer();
