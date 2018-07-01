@@ -1,4 +1,6 @@
 import AbstractView from './abstract-view.js';
+import Router from './router.js';
+
 const Bonus = {
   FAST: 50,
   SLOW: -50,
@@ -20,7 +22,7 @@ export default class StatsModuleView extends AbstractView {
       return answer.statsResult === `slow`;
     }).length;
     const correctAnswers = this.answers.filter((answer) => {
-      return answer.statsResult === `correct`;
+      return answer.statsResult === `correct` || answer.statsResult === `fast` || answer.statsResult === `slow`;
     }).length;
     if (this.result < 0) {
       return `<tr>
@@ -149,5 +151,11 @@ export default class StatsModuleView extends AbstractView {
       </tr>
     </table>
   </div>`;
+  }
+  bind() {
+    const buttonBack = this.element.querySelector(`button.back`);
+    buttonBack.addEventListener(`click`, () => {
+      Router.showGreeting();
+    });
   }
 }

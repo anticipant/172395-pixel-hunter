@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view.js';
+import Router from './router.js';
 
 export default class IntroView extends AbstractView {
   constructor() {
@@ -10,11 +11,10 @@ export default class IntroView extends AbstractView {
       <p class="intro__motto"><sup>*</sup> Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.</p>
      </div>`;
   }
-  onClick() {}
   bind() {
     const showScreenTrigger = this.element.querySelector(`.intro__asterisk`);
     showScreenTrigger.addEventListener(`click`, () => {
-      this.onClick();
+      Router.showGreeting();
     });
   }
   get element() {
