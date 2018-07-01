@@ -8,8 +8,20 @@ const UserAnswer = {
 };
 export const questions = [
   {
+    type: `two-of-two`,
     title: `Угадайте для каждого изображения фото или рисунок?`,
-    imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`],
+    imagesPathArray: [
+      {
+        url: `https://k42.kn3.net/D2F0370D6.jpg`,
+        width: 468,
+        height: 458,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 468,
+        height: 458,
+      }
+    ],
     answers: {
       question1: {
         'photo': UserAnswer.CORRECT,
@@ -23,8 +35,20 @@ export const questions = [
 
   },
   {
+    type: `two-of-two`,
     title: `Угадайте для каждого изображения фото или рисунок?`,
-    imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`],
+    imagesPathArray: [
+      {
+        url: `https://k42.kn3.net/D2F0370D6.jpg`,
+        width: 468,
+        height: 458,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 468,
+        height: 458,
+      }
+    ],
     answers: {
       question1: {
         'photo': UserAnswer.WRONG,
@@ -37,8 +61,20 @@ export const questions = [
     }
   },
   {
+    type: `two-of-two`,
     title: `Угадайте для каждого изображения фото или рисунок?`,
-    imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`, `https://k32.kn3.net/5C7060EC5.jpg`],
+    imagesPathArray: [
+      {
+        url: `https://k42.kn3.net/D2F0370D6.jpg`,
+        width: 468,
+        height: 458,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 468,
+        height: 458,
+      }
+    ],
     answers: {
       question1: {
         'photo': UserAnswer.CORRECT,
@@ -51,8 +87,15 @@ export const questions = [
     }
   },
   {
+    type: `tinder-like`,
     title: `Угадай, фото или рисунок?`,
-    imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
+    imagesPathArray: [
+      {
+        url: `http://i.imgur.com/DKR1HtB.jpg`,
+        width: 705,
+        height: 455,
+      }
+    ],
     answers: {
       question1: {
         'photo': UserAnswer.CORRECT,
@@ -61,8 +104,15 @@ export const questions = [
     }
   },
   {
+    type: `tinder-like`,
     title: `Угадай, фото или рисунок?`,
-    imagesPathArray: [`https://k32.kn3.net/5C7060EC5.jpg`],
+    imagesPathArray: [
+      {
+        url: `http://i.imgur.com/DKR1HtB.jpg`,
+        width: 705,
+        height: 455,
+      }
+    ],
     answers: {
       question1: {
         'photo': UserAnswer.WRONG,
@@ -71,8 +121,15 @@ export const questions = [
     }
   },
   {
+    type: `tinder-like`,
     title: `Угадай, фото или рисунок?`,
-    imagesPathArray: [`http://i.imgur.com/DKR1HtB.jpg`],
+    imagesPathArray: [
+      {
+        url: `http://i.imgur.com/DKR1HtB.jpg`,
+        width: 705,
+        height: 455,
+      }
+    ],
     answers: {
       question1: {
         'photo': UserAnswer.CORRECT,
@@ -81,6 +138,7 @@ export const questions = [
     }
   },
   {
+    type: `tinder-like`,
     title: `Угадай, фото или рисунок?`,
     imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`],
     answers: {
@@ -91,8 +149,25 @@ export const questions = [
     }
   },
   {
+    type: `one-of-three`,
     title: `Найдите рисунок среди изображений`,
-    imagesPathArray: [`https://k42.kn3.net/CF42609C8.jpg`, `http://i.imgur.com/1KegWPz.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`],
+    imagesPathArray: [
+      {
+        url: `https://k42.kn3.net/D2F0370D6.jpg`,
+        width: 304,
+        height: 455,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 304,
+        height: 455,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 304,
+        height: 455,
+      }
+    ],
     answers: {
       'image1': {
         'photo': UserAnswer.WRONG,
@@ -109,8 +184,25 @@ export const questions = [
     }
   },
   {
+    type: `one-of-three`,
     title: `Найдите рисунок среди изображений`,
-    imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`, `https://k42.kn3.net/CF42609C8.jpg`],
+    imagesPathArray: [
+      {
+        url: `https://k42.kn3.net/D2F0370D6.jpg`,
+        width: 304,
+        height: 455,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 304,
+        height: 455,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 304,
+        height: 455,
+      }
+    ],
     answers: {
       'image1': {
         'photo': UserAnswer.WRONG,
@@ -127,8 +219,25 @@ export const questions = [
     }
   },
   {
+    type: `one-of-three`,
     title: `Найдите рисунок среди изображений`,
-    imagesPathArray: [`https://k42.kn3.net/D2F0370D6.jpg`, `https://i.imgur.com/DiHM5Zb.jpg`, `https://k42.kn3.net/CF42609C8.jpg`],
+    imagesPathArray: [
+      {
+        url: `https://k42.kn3.net/D2F0370D6.jpg`,
+        width: 304,
+        height: 455,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 304,
+        height: 455,
+      },
+      {
+        url: `https://i.imgur.com/DiHM5Zb.jpg`,
+        width: 304,
+        height: 455,
+      }
+    ],
     answers: {
       'image1': {
         'photo': UserAnswer.WRONG,
@@ -144,4 +253,102 @@ export const questions = [
       },
     }
   },
+];
+const boom = [
+  {
+    "type": "two-of-two",
+    "question": "Угадайте для каждого изображения фото или рисунок?",
+    "answers": [
+      {
+        "image": {
+          "url": "http://placehold.it/468x458",
+          "width": 468,
+          "height": 458
+        },
+        "type": "photo"
+      },
+      {
+        "image": {
+          "url": "http://placehold.it/468x458",
+          "width": 468,
+          "height": 458
+        },
+        "type": "painting"
+      }
+    ]
+  },
+  {
+    "type": "tinder-like",
+    "question": "Угадай, фото или рисунок?",
+    "answers": [
+      {
+        "image": {
+          "url": "http://placehold.it/705x455",
+          "width": 705,
+          "height": 455
+        },
+        "type": "photo"
+      }
+    ]
+  },
+  {
+    "type": "one-of-three",
+    "question": "Найдите рисунок среди изображений",
+    "answers": [
+      {
+        "image": {
+          "url": "http://placehold.it/304x455",
+          "width": 304,
+          "height": 455
+        },
+        "type": "photo"
+      },
+      {
+        "image": {
+          "url": "http://placehold.it/304x455",
+          "width": 304,
+          "height": 455
+        },
+        "type": "painting"
+      },
+      {
+        "image": {
+          "url": "http://placehold.it/304x455",
+          "width": 304,
+          "height": 455
+        },
+        "type": "photo"
+      }
+    ]
+  },
+  {
+    "type": "one-of-three",
+    "question": "Найдите фото среди изображений",
+    "answers": [
+      {
+        "image": {
+          "url": "http://placehold.it/304x455",
+          "width": 304,
+          "height": 455
+        },
+        "type": "painting"
+      },
+      {
+        "image": {
+          "url": "http://placehold.it/304x455",
+          "width": 304,
+          "height": 455
+        },
+        "type": "painting"
+      },
+      {
+        "image": {
+          "url": "http://placehold.it/304x455",
+          "width": 304,
+          "height": 455
+        },
+        "type": "photo"
+      }
+    ]
+  }
 ];

@@ -14,7 +14,7 @@ export default class GameViewFirst extends AbstractView {
     <form class="game__content">
     ${this.question.imagesPathArray.map((it, index) => `
         <div class="game__option">
-        <img src="${it}" alt="Option ${index + 1}" width="468" height="458">
+        <img src="${it.url}" alt="Option ${index + 1}" width="${it.width}" height="${it.height}">
         <label class="game__answer game__answer--photo">
           <input name="question${index + 1}" type="radio" value="photo">
           <span>Фото</span>

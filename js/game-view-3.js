@@ -12,7 +12,7 @@ export default class GameViewThird extends AbstractView {
       <form class="game__content  game__content--triple">
       ${this.question.imagesPathArray.map((it, index) => `
           <div class="game__option">
-            <img src="${it}" data-name="image${index + 1}" alt="Option 1" width="304" height="455">
+            <img src="${it.url}" data-name="image${index + 1}" alt="Option 1" width="${it.width}" height="${it.height}">
           </div>`).join(``)}
       </form>
    </div>`;
