@@ -9,9 +9,9 @@ import Footer from './footer-view.js';
 
 const ONE_SECOND = 1000;
 const QuestionType = {
-  TWO_OF_TWO: 'two-of-two',
-  TINDER_LIKE: 'tinder-like',
-  ONE_OF_THREE: 'one-of-three'
+  TWO_OF_TWO: `two-of-two`,
+  TINDER_LIKE: `tinder-like`,
+  ONE_OF_THREE: `one-of-three`,
 };
 export default class GameScreen {
   constructor(model) {

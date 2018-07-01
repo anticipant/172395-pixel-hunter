@@ -10,17 +10,17 @@ export default class GameViewFirst extends AbstractView {
   render() {
     return `
   <div class="game">
-    <p class="game__task">${this.question.title}</p>
+    <p class="game__task">${this.question.question}</p>
     <form class="game__content">
     ${this.question.imagesPathArray.map((it, index) => `
         <div class="game__option">
-        <img src="${it.url}" alt="Option ${index + 1}" width="${it.width}" height="${it.height}">
+        <img src="${it.url}" alt="Option ${index}" width="${it.width}" height="${it.height}">
         <label class="game__answer game__answer--photo">
-          <input name="question${index + 1}" type="radio" value="photo">
+          <input name="image${index}" type="radio" value="photo">
           <span>Фото</span>
         </label>
         <label class="game__answer game__answer--paint">
-          <input name="question${index + 1}" type="radio" value="paint">
+          <input name="image${index}" type="radio" value="painting">
           <span>Рисунок</span>
         </label>
       </div>`).join(``)}
