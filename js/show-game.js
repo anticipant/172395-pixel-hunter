@@ -49,6 +49,9 @@ export default class GameScreen {
     this._interval = setTimeout(() => {
       this.model.tick();
       this.updateHeader();
+      if (this.model.time === 0) {
+        this.checkAnswer(false);
+      }
       this.startTimer();
     }, ONE_SECOND);
   }

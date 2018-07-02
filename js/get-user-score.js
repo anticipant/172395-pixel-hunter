@@ -33,15 +33,16 @@ export const getUserResult = (answers, lives) => {
       throw new Error(`time key must be a number`);
     }
     if (round.time > Limit.TIME || round.time < 0) {
-      throw new Error(`Number must be greater than 0 less than 30`);
+      throw new Error(`Number must be greater than 0`);
     }
 
     return round.answer;
   });
   positiveArrayAnswers.forEach((index) => {
-    if (index.time < Limit.FAST_TIME) {
+    let time = Limit.TIME - index.time;
+    if (time < Limit.FAST_TIME) {
       score = score + Answer.RIGHT + Answer.FAST_BONUS;
-    } else if (Limit.TIME >= index.time && index.time >= Limit.SLOW_TIME) {
+    } else if (Limit.TIME >= time && time >= Limit.SLOW_TIME) {
       score = score + Answer.RIGHT - Answer.SLOW_FINE;
     } else {
       score = score + Answer.RIGHT;
