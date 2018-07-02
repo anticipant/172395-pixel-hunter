@@ -8,6 +8,7 @@ import HeaderLevelView from './header-level-view.js';
 import Footer from './footer-view.js';
 
 const ONE_SECOND = 1000;
+const BLINK_TIME = 5;
 const QuestionType = {
   TWO_OF_TWO: `two-of-two`,
   TINDER_LIKE: `tinder-like`,
@@ -18,6 +19,7 @@ export default class GameScreen {
     this.model = model;
     this.restartModal = new RestartModalView();
     this.restartModal.onConfirm = () => {
+      this.removeListener();
       this.stopTimer();
       Router.showGreeting();
     };
@@ -28,13 +30,13 @@ export default class GameScreen {
     this.addListener();
   }
   getHandler(setThis) {
-    this.onButtonBackClick = function (evt) {
-      let target = evt.target;
-      let buttonBack = target.closest(`button.back`);
+    this.onButtonBackClick = (evt) => {
+      const target = evt.target;
+      const buttonBack = target.closest(`button.back`);
 
       if (buttonBack) {
-        const container = document.querySelector(`.central`);
-        container.insertAdjacentElement(`beforeBegin`, setThis.element);
+        const containerElement = document.querySelector(`.central`);
+        containerElement.insertAdjacentElement(`beforeBegin`, setThis.element);
       }
     };
   }
@@ -48,7 +50,14 @@ export default class GameScreen {
     this._interval = setTimeout(() => {
       this.model.tick();
       this.updateHeader();
-      this.startTimer();
+      if (this.model.time === BLINK_TIME) {
+        this.setBlinkMode(true);
+      }
+      if (this.model.time === 0) {
+        this.checkAnswer(false);
+      } else {
+        this.startTimer();
+      }
     }, ONE_SECOND);
   }
   updateStats() {
@@ -57,8 +66,8 @@ export default class GameScreen {
     this.stats = stats;
   }
   getStats() {
-    const footer = document.querySelector(`.footer`);
-    footer.insertAdjacentElement(`beforeBegin`, this.stats.element);
+    const footerElement = document.querySelector(`.footer`);
+    footerElement.insertAdjacentElement(`beforeBegin`, this.stats.element);
   }
   updateHeader() {
     const header = new HeaderLevelView(this.model.state);
@@ -66,8 +75,8 @@ export default class GameScreen {
     this.header = header;
   }
   getHeader() {
-    const container = document.querySelector(`.central`);
-    container.insertAdjacentElement(`afterbegin`, this.header.element);
+    const containerElement = document.querySelector(`.central`);
+    containerElement.insertAdjacentElement(`afterbegin`, this.header.element);
   }
   getGameModeView(countOfQuestions) {
     let result;
@@ -85,7 +94,7 @@ export default class GameScreen {
     return result;
   }
   updateGameBody() {
-    let gameBody = this.getGameModeView(this.model.currentActualQuestion.type);
+    const gameBody = this.getGameModeView(this.model.currentActualQuestion.type);
     gameBody.onAnswer = (isCorrectAnswers) => {
       this.checkAnswer(isCorrectAnswers);
     };
@@ -105,23 +114,29 @@ export default class GameScreen {
   }
   showStatsView() {
     this.removeListener();
-    Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
+    Router.showStats(this.model);
+  }
+  setBlinkMode(mode) {
+    if (mode) {
+      document.querySelector(`.central`).classList.add(`blink`);
+    } else {
+      document.querySelector(`.central`).classList.remove(`blink`);
+    }
   }
   checkAnswer(isCorrect) {
     this.stopTimer();
+    this.setBlinkMode(false);
     this.model.currentAnswer = isCorrect;
     this.model.getAnswers();
-
     this.updateStats();
     if (!isCorrect) {
       this.model.reduceLive();
-      this.updateHeader();
-      if (!this.model.lives) {
-        this.showStatsView();
+      if (this.model.lives >= 0) {
+        this.updateHeader();
       }
     }
     this.resetTimer();
-    if (this.model.isStillQuestion()) {
+    if (this.model.isStillQuestion() && this.model.lives >= 0) {
       this.showGame();
     } else {
       this.showStatsView();

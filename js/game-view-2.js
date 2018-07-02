@@ -27,15 +27,15 @@ export default class GameViewSecond extends AbstractView {
   }
   onAnswer() {}
   bind() {
-    const showScreenTrigger = this.element.querySelector(`.game__content`);
-    showScreenTrigger.addEventListener(`change`, (evt) => {
-      let answerKey = evt.target.getAttribute(`name`);
-      let answerValue = evt.target.value;
+    const formElement = this.element.querySelector(`.game__content`);
+    formElement.addEventListener(`change`, (evt) => {
+      const answerKey = evt.target.getAttribute(`name`);
+      const answerValue = evt.target.value;
       this.checkAnswer(answerKey, answerValue);
     });
   }
   checkAnswer(answerKey, answerValue) {
-    let isCorrectAnswers = !!this.question.answers[answerKey][answerValue];
+    const isCorrectAnswers = !!this.question.answers[answerKey][answerValue];
     this.onAnswer(isCorrectAnswers);
   }
 }

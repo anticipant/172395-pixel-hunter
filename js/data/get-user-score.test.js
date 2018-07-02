@@ -10,7 +10,7 @@ const pseudoAnswers = (obj, counter) => {
 describe(`user score`, () => {
   describe(`should return  game over`, () => {
     it(`when there are no lives left `, () => {
-      const lives = 0;
+      const lives = -1;
       const answers = pseudoAnswers({answer: true, time: 2}, 7)
         .concat({answer: false, time: 11})
         .concat({answer: false, time: 22})
@@ -35,21 +35,21 @@ describe(`user score`, () => {
     it(`when user has 3 fast answers and 2 lives`, () => {
       const lives = 2;
       let answers = pseudoAnswers({answer: true, time: 15}, 6)
-        .concat({answer: false, time: 1})
-        .concat({answer: true, time: 1})
-        .concat({answer: true, time: 2})
-        .concat({answer: true, time: 3});
+        .concat({answer: false, time: 29})
+        .concat({answer: true, time: 29})
+        .concat({answer: true, time: 29})
+        .concat({answer: true, time: 27});
       assert.equal(getUserResult(answers, lives), 1150);
     });
     it(`when user has 3 fast answers, 1 slow answer and 1 lives`, () => {
       const lives = 1;
       let answers = pseudoAnswers({answer: true, time: 15}, 4)
-        .concat({answer: false, time: 1})
-        .concat({answer: false, time: 1})
-        .concat({answer: true, time: 1})
-        .concat({answer: true, time: 2})
-        .concat({answer: true, time: 3})
-        .concat({answer: true, time: 23});
+        .concat({answer: false, time: 29})
+        .concat({answer: false, time: 29})
+        .concat({answer: true, time: 29})
+        .concat({answer: true, time: 29})
+        .concat({answer: true, time: 29})
+        .concat({answer: true, time: 2});
       assert.equal(getUserResult(answers, lives), 950);
     });
   });
@@ -65,11 +65,6 @@ describe(`should not allow set invalid value`, () => {
     const answers = pseudoAnswers({answer: true, time: 14}, 10);
     assert.throws(() => getUserResult(answers, lives), /Wrong type Expect number type/);
   });
-  it(`lives should not be negative value`, () => {
-    const lives = -1;
-    const answers = pseudoAnswers({answer: true, time: 14}, 10);
-    assert.throws(() => getUserResult(answers, lives), /lives should be greater than 0 less than 3/);
-  });
   it(`not allow set not an boolean for answers.answer`, () => {
     const lives = 2;
     const answers = pseudoAnswers({answer: true, time: 14}, 9).concat({answer: null, time: 22});
@@ -83,6 +78,6 @@ describe(`should not allow set invalid value`, () => {
   it(`not allow set incorrect value for answers.time`, () => {
     const lives = 3;
     const answers = pseudoAnswers({answer: true, time: 14}, 9).concat({answer: true, time: 31});
-    assert.throws(() => getUserResult(answers, lives), /Number must be greater than 0 less than 30/);
+    assert.throws(() => getUserResult(answers, lives), /Number must be greater than 0/);
   });
 });

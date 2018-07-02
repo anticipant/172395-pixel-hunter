@@ -19,8 +19,8 @@ export default class GreetingView extends AbstractView {
             <div class="greeting__continue"><span><img src="img/arrow_right.svg" width="64" height="64" alt="Next"></span></div>`;
   }
   bind() {
-    const showScreenTrigger = this.element.querySelector(`.greeting__continue`);
-    showScreenTrigger.addEventListener(`click`, () => {
+    const triggerElement = this.element.querySelector(`.greeting__continue`);
+    triggerElement.addEventListener(`click`, () => {
       Router.showRules();
     });
   }

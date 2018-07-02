@@ -6,9 +6,27 @@
   position: relative;
   max-width: 1000px;
   margin: 0 auto;
+
+  &.blink {
+
+    .game__timer {
+      animation-name: blink;
+      animation-duration: 500ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+  }
 }
 
 .central__content {
   display: flex;
   min-height: 740px;
+}
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
