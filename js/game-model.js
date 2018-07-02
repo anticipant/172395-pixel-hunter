@@ -1,7 +1,10 @@
-import {questions, headerState} from './data.js';
 import {Limit} from './get-user-score.js';
 import {getUserResult} from './get-user-score.js';
 
+const headerState = {
+  lives: 3,
+  time: 0,
+};
 const reduceLive = (state) => {
   const lives = state.lives - 1;
   return Object.assign({}, state, {
@@ -36,9 +39,9 @@ const resetTimer = (state) => {
     time: 0,
   });
 };
-
 export default class GameModel {
-  constructor() {
+  constructor(questions) {
+    this.questions = questions;
     this.restart();
   }
   get state() {
@@ -63,7 +66,7 @@ export default class GameModel {
     this._currentAnswer = answerResult;
   }
   restart() {
-    this._questions = questions.slice();
+    this._questions = this.questions.slice();
     this._state = Object.assign({}, headerState);
     this._answers = [];
   }

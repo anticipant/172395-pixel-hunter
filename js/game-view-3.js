@@ -8,11 +8,11 @@ export default class GameViewThird extends AbstractView {
   render() {
     return `
   <div class="game">
-      <p class="game__task">${this.question.title}</p>
+      <p class="game__task">${this.question.question}</p>
       <form class="game__content  game__content--triple">
       ${this.question.imagesPathArray.map((it, index) => `
           <div class="game__option">
-            <img src="${it}" data-name="image${index + 1}" alt="Option 1" width="304" height="455">
+            <img src="${it.url}" data-name="image${index}" alt="Option 1" width="${it.width}" height="${it.height}">
           </div>`).join(``)}
       </form>
    </div>`;
@@ -23,7 +23,7 @@ export default class GameViewThird extends AbstractView {
     showScreenTrigger.addEventListener(`click`, (evt) => {
       if (evt.target.classList.contains(`game__option`)) {
         let answerKey = evt.target.querySelector(`img`).getAttribute(`data-name`);
-        let answerValue = `paint`;
+        let answerValue = `painting`;
         this.checkAnswer(answerKey, answerValue);
       }
     });

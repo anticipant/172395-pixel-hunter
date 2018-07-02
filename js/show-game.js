@@ -8,10 +8,10 @@ import HeaderLevelView from './header-level-view.js';
 import Footer from './footer-view.js';
 
 const ONE_SECOND = 1000;
-const GameMode = {
-  SINGLE: 1,
-  DOUBLE: 2,
-  TRIPLE: 3
+const QuestionType = {
+  TWO_OF_TWO: `two-of-two`,
+  TINDER_LIKE: `tinder-like`,
+  ONE_OF_THREE: `one-of-three`,
 };
 export default class GameScreen {
   constructor(model) {
@@ -72,20 +72,20 @@ export default class GameScreen {
   getGameModeView(countOfQuestions) {
     let result;
     switch (countOfQuestions) {
-      case GameMode.SINGLE :
-        result = new GameViewSecond(this.model.currentActualQuestion);
-        break;
-      case GameMode.DOUBLE :
+      case QuestionType.TWO_OF_TWO :
         result = new GameViewFirst(this.model.currentActualQuestion);
         break;
-      case GameMode.TRIPLE :
+      case QuestionType.TINDER_LIKE :
+        result = new GameViewSecond(this.model.currentActualQuestion);
+        break;
+      case QuestionType.ONE_OF_THREE :
         result = new GameViewThird(this.model.currentActualQuestion);
         break;
     }
     return result;
   }
   updateGameBody() {
-    let gameBody = this.getGameModeView(this.model.currentActualQuestion.imagesPathArray.length);
+    let gameBody = this.getGameModeView(this.model.currentActualQuestion.type);
     gameBody.onAnswer = (isCorrectAnswers) => {
       this.checkAnswer(isCorrectAnswers);
     };
@@ -95,7 +95,7 @@ export default class GameScreen {
   getGameBody() {
     const footer = new Footer();
     const mainElement = document.querySelector(`.central`);
-    this.level = this.getGameModeView(this.model.currentActualQuestion.imagesPathArray.length);
+    this.level = this.getGameModeView(this.model.currentActualQuestion.type);
     this.level.onAnswer = (isCorrectAnswers) => {
       this.checkAnswer(isCorrectAnswers);
     };
