@@ -18,15 +18,11 @@ export const getUserResult = (answers, lives) => {
   if (typeof lives !== `number`) {
     throw new Error(`Wrong type Expect number type`);
   }
-  if (lives < 0 || lives > Limit.LIVES) {
-    throw new Error(`lives should be greater than 0 less than 3`);
-  }
   score = score + lives * LIVE_BONUS;
   if (Array.isArray(answers) !== true) {
     throw new Error(`answers must be an array`);
   }
-
-  if (answers.length < 10 || lives === 0) {
+  if (answers.length < 10 || lives < 0) {
     return -1;
   }
   let positiveArrayAnswers = answers.filter((round) => {

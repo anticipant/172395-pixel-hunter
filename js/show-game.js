@@ -115,10 +115,12 @@ export default class GameScreen {
     this.updateStats();
     if (!isCorrect) {
       this.model.reduceLive();
-      this.updateHeader();
+      if (this.model.lives >= 0) {
+        this.updateHeader();
+      }
     }
     this.resetTimer();
-    if (this.model.isStillQuestion() && this.model.lives) {
+    if (this.model.isStillQuestion() && this.model.lives >= 0) {
       this.showGame();
     } else {
       this.showStatsView();

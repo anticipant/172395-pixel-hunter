@@ -10,7 +10,7 @@ const pseudoAnswers = (obj, counter) => {
 describe(`user score`, () => {
   describe(`should return  game over`, () => {
     it(`when there are no lives left `, () => {
-      const lives = 0;
+      const lives = -1;
       const answers = pseudoAnswers({answer: true, time: 2}, 7)
         .concat({answer: false, time: 11})
         .concat({answer: false, time: 22})
@@ -64,11 +64,6 @@ describe(`should not allow set invalid value`, () => {
     const lives = `123`;
     const answers = pseudoAnswers({answer: true, time: 14}, 10);
     assert.throws(() => getUserResult(answers, lives), /Wrong type Expect number type/);
-  });
-  it(`lives should not be negative value`, () => {
-    const lives = -1;
-    const answers = pseudoAnswers({answer: true, time: 14}, 10);
-    assert.throws(() => getUserResult(answers, lives), /lives should be greater than 0 less than 3/);
   });
   it(`not allow set not an boolean for answers.answer`, () => {
     const lives = 2;

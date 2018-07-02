@@ -70,7 +70,7 @@ ${this.getTitle(stats, index)}
           ${Bonus.FAST * fastAnswers}
         </td>
       </tr>
-      <tr>
+      <tr ${Bonus.LIVE === 0 ? `style="display: none;"` : ``}>
         <td></td>
         <td class="result__extra">Бонус за жизни:</td>
         <td class="result__extra">${stats.lives}&nbsp;<span class="stats__result stats__result--alive"></span></td>
