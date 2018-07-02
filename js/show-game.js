@@ -55,8 +55,9 @@ export default class GameScreen {
       }
       if (this.model.time === 0) {
         this.checkAnswer(false);
+      } else {
+        this.startTimer();
       }
-      this.startTimer();
     }, ONE_SECOND);
   }
   updateStats() {
