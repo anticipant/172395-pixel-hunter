@@ -12,7 +12,9 @@ let questData;
 export default class Router {
   static loadData() {
     Loader.loadData().
-    then((data) => questData = data).
+    then((data) => {
+      questData = data;
+    }).
     then(() => Router.showIntro()).
     catch(Router.showError);
   }

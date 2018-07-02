@@ -38,7 +38,6 @@ export default class RulesView extends AbstractVIew {
       showScreenTrigger.disabled = !(evt.target.value.length > 0);
     });
     rulesInput.addEventListener(`change`, (evt) => {
-      console.log(evt.target.value);
       userName = evt.target.value;
     });
     const showScreenTrigger = this.element.querySelector(`.rules__button`);

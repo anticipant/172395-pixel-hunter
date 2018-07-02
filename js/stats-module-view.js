@@ -14,7 +14,7 @@ export default class StatsModuleView extends AbstractView {
   }
   getTitle(stats, index) {
     if (index === 0) {
-      return stats.result < 0  ? `<h1>Поражение!</h1>` : `<h1>Победа!</h1>`
+      return stats.result < 0 ? `<h1>Поражение!</h1>` : `<h1>Победа!</h1>`;
     }
     return ``;
   }
@@ -103,10 +103,10 @@ ${this.getTitle(stats, index)}
     </div>
   </header>
   <div class="result">
-  
-    ${this.data.map((stats, index) => {
-      return `${this.userResultMarkup(stats, index).trim()}`;
-    }).join(``)}
+
+${this.data.map((stats, index) => {
+    return `${this.userResultMarkup(stats, index).trim()}`;
+  }).join(``)}
   </div>`;
   }
   bind() {

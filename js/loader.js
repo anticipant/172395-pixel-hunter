@@ -4,7 +4,6 @@ const ServerUrl = {
   QUESTIONS: `https://es.dump.academy/pixel-hunter/questions`,
   STATS: `https://es.dump.academy/pixel-hunter/stats`,
 };
-`https://es.dump.academy/pixel-hunter`;
 const DEFAULT_NAME = `Pistolet`;
 const APP_ID = 172395;
 const checkStatus = (response) => {
