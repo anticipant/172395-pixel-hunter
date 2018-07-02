@@ -35,7 +35,6 @@ export default class GameViewFirst extends AbstractView {
       const answerValue = evt.target.value;
       this.checkAnswer(answerKey, answerValue);
     });
-
   }
   checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
     if (this.numberOfResponses.indexOf(clickedAnswerKey) < 0) {

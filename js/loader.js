@@ -13,7 +13,6 @@ const checkStatus = (response) => {
     throw new Error(`${response.status}: ${response.statusText}`);
   }
 };
-
 const toJSON = (res) => res.json();
 
 export default class Loader {
