@@ -10,8 +10,6 @@ export const Answer = {
   SLOW_FINE: 50,
 };
 export const getUserResult = (answers, lives) => {
-
-
   const LIVE_BONUS = 50;
   let score = 0;
 
@@ -25,7 +23,7 @@ export const getUserResult = (answers, lives) => {
   if (answers.length < 10 || lives < 0) {
     return -1;
   }
-  let positiveArrayAnswers = answers.filter((round) => {
+  const positiveArrayAnswers = answers.filter((round) => {
     if (typeof round.answer !== `boolean`) {
       throw new Error(`answer key must be a boolean`);
     }
@@ -39,7 +37,7 @@ export const getUserResult = (answers, lives) => {
     return round.answer;
   });
   positiveArrayAnswers.forEach((index) => {
-    let time = Limit.TIME - index.time;
+    const time = Limit.TIME - index.time;
     if (time < Limit.FAST_TIME) {
       score = score + Answer.RIGHT + Answer.FAST_BONUS;
     } else if (Limit.TIME >= time && time >= Limit.SLOW_TIME) {

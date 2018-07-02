@@ -31,8 +31,8 @@ export default class GameViewFirst extends AbstractView {
   bind() {
     const showScreenTrigger = this.element.querySelector(`.game__content`);
     showScreenTrigger.addEventListener(`change`, (evt) => {
-      let answerKey = evt.target.getAttribute(`name`);
-      let answerValue = evt.target.value;
+      const answerKey = evt.target.getAttribute(`name`);
+      const answerValue = evt.target.value;
       this.checkAnswer(answerKey, answerValue);
     });
 
@@ -45,7 +45,6 @@ export default class GameViewFirst extends AbstractView {
       });
       this.numberOfResponses.push(clickedAnswerKey);
     } else {
-      // todo заменить этот костыль
       this.userAnswers = [{
         answerKey: clickedAnswerKey,
         answerValue: clickedAnswerValue,
@@ -54,11 +53,10 @@ export default class GameViewFirst extends AbstractView {
     return this.numberOfResponses.length;
   }
   checkAnswer(answerKey, answerValue) {
-    let isCorrectAnswers;
-    let minNumberAnswers = 2;
-    let countOfAnswers = this.checkCountOfAnswers(answerKey, answerValue);
+    const minNumberAnswers = 2;
+    const countOfAnswers = this.checkCountOfAnswers(answerKey, answerValue);
     if (countOfAnswers === minNumberAnswers) {
-      isCorrectAnswers = this.userAnswers.every((it) => {
+      const isCorrectAnswers = this.userAnswers.every((it) => {
         return this.question.answers[it.answerKey][it.answerValue];
       });
       this.onAnswer(isCorrectAnswers);

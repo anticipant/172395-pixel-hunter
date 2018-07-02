@@ -7,7 +7,7 @@ const ServerUrl = {
 const DEFAULT_NAME = `Pistolet`;
 const APP_ID = 172395;
 const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.ok) {
     return response;
   } else {
     throw new Error(`${response.status}: ${response.statusText}`);

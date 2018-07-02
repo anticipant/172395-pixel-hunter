@@ -30,8 +30,8 @@ export default class GameScreen {
   }
   getHandler(setThis) {
     this.onButtonBackClick = function (evt) {
-      let target = evt.target;
-      let buttonBack = target.closest(`button.back`);
+      const target = evt.target;
+      const buttonBack = target.closest(`button.back`);
 
       if (buttonBack) {
         const container = document.querySelector(`.central`);
@@ -89,7 +89,7 @@ export default class GameScreen {
     return result;
   }
   updateGameBody() {
-    let gameBody = this.getGameModeView(this.model.currentActualQuestion.type);
+    const gameBody = this.getGameModeView(this.model.currentActualQuestion.type);
     gameBody.onAnswer = (isCorrectAnswers) => {
       this.checkAnswer(isCorrectAnswers);
     };
