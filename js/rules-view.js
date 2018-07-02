@@ -33,21 +33,21 @@ export default class RulesView extends AbstractVIew {
   }
   bind() {
     let userName;
-    const rulesInput = this.element.querySelector(`.rules__input`);
-    rulesInput.addEventListener(`keyup`, (evt) => {
-      showScreenTrigger.disabled = !(evt.target.value.length > 0);
+    const rulesInputElement = this.element.querySelector(`.rules__input`);
+    rulesInputElement.addEventListener(`keyup`, (evt) => {
+      buttonElement.disabled = !(evt.target.value.length > 0);
     });
-    rulesInput.addEventListener(`change`, (evt) => {
+    rulesInputElement.addEventListener(`change`, (evt) => {
       userName = evt.target.value;
     });
-    const showScreenTrigger = this.element.querySelector(`.rules__button`);
+    const buttonElement = this.element.querySelector(`.rules__button`);
 
-    showScreenTrigger.addEventListener(`click`, (evt) => {
+    buttonElement.addEventListener(`click`, (evt) => {
       evt.preventDefault();
       Router.showGameScreen(true, userName);
     });
-    const buttonBack = this.element.querySelector(`button.back`);
-    buttonBack.addEventListener(`click`, () => {
+    const buttonBackElement = this.element.querySelector(`button.back`);
+    buttonBackElement.addEventListener(`click`, () => {
       Router.showGreeting();
     });
 

@@ -12,8 +12,8 @@ export default class IntroView extends AbstractView {
      </div>`;
   }
   bind() {
-    const showScreenTrigger = this.element.querySelector(`.intro__asterisk`);
-    showScreenTrigger.addEventListener(`click`, () => {
+    const triggerElement = this.element.querySelector(`.intro__asterisk`);
+    triggerElement.addEventListener(`click`, () => {
       Router.showGreeting();
     });
   }

@@ -51,7 +51,7 @@ export default class Router {
   }
   static showError(err) {
     const errorScreen = new ErrorView(err);
-    const container = document.querySelector(`.central`);
-    container.insertAdjacentElement(`beforeBegin`, errorScreen.element);
+    const containerElement = document.querySelector(`.central`);
+    containerElement.insertAdjacentElement(`beforeBegin`, errorScreen.element);
   }
 }

@@ -29,13 +29,13 @@ export default class GameScreen {
     this.addListener();
   }
   getHandler(setThis) {
-    this.onButtonBackClick = function (evt) {
+    this.onButtonBackClick = (evt) => {
       const target = evt.target;
       const buttonBack = target.closest(`button.back`);
 
       if (buttonBack) {
-        const container = document.querySelector(`.central`);
-        container.insertAdjacentElement(`beforeBegin`, setThis.element);
+        const containerElement = document.querySelector(`.central`);
+        containerElement.insertAdjacentElement(`beforeBegin`, setThis.element);
       }
     };
   }
@@ -61,8 +61,8 @@ export default class GameScreen {
     this.stats = stats;
   }
   getStats() {
-    const footer = document.querySelector(`.footer`);
-    footer.insertAdjacentElement(`beforeBegin`, this.stats.element);
+    const footerElement = document.querySelector(`.footer`);
+    footerElement.insertAdjacentElement(`beforeBegin`, this.stats.element);
   }
   updateHeader() {
     const header = new HeaderLevelView(this.model.state);
@@ -70,8 +70,8 @@ export default class GameScreen {
     this.header = header;
   }
   getHeader() {
-    const container = document.querySelector(`.central`);
-    container.insertAdjacentElement(`afterbegin`, this.header.element);
+    const containerElement = document.querySelector(`.central`);
+    containerElement.insertAdjacentElement(`afterbegin`, this.header.element);
   }
   getGameModeView(countOfQuestions) {
     let result;

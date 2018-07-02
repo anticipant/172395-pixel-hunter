@@ -110,8 +110,8 @@ ${this.data.map((stats, index) => {
   </div>`;
   }
   bind() {
-    const buttonBack = this.element.querySelector(`button.back`);
-    buttonBack.addEventListener(`click`, () => {
+    const buttonBackElement = this.element.querySelector(`button.back`);
+    buttonBackElement.addEventListener(`click`, () => {
       Router.showGreeting();
     });
   }

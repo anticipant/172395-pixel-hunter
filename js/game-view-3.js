@@ -22,8 +22,8 @@ export default class GameViewThird extends AbstractView {
     const {image0, image1, image2} = this.question.answers;
     const answers = [image0, image1, image2];
     const answerValue = answers.filter((it) => it[`photo`] === 1).length === 1 ? `photo` : `painting`;
-    const showScreenTrigger = this.element.querySelector(`.game__content`);
-    showScreenTrigger.addEventListener(`click`, (evt) => {
+    const formElement = this.element.querySelector(`.game__content`);
+    formElement.addEventListener(`click`, (evt) => {
       if (evt.target.classList.contains(`game__option`)) {
         const answerKey = evt.target.querySelector(`img`).getAttribute(`data-name`);
         this.checkAnswer(answerKey, answerValue);

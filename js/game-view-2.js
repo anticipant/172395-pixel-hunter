@@ -27,8 +27,8 @@ export default class GameViewSecond extends AbstractView {
   }
   onAnswer() {}
   bind() {
-    const showScreenTrigger = this.element.querySelector(`.game__content`);
-    showScreenTrigger.addEventListener(`change`, (evt) => {
+    const formElement = this.element.querySelector(`.game__content`);
+    formElement.addEventListener(`change`, (evt) => {
       const answerKey = evt.target.getAttribute(`name`);
       const answerValue = evt.target.value;
       this.checkAnswer(answerKey, answerValue);
