@@ -40,12 +40,16 @@ const resetTimer = (state) => {
   });
 };
 export default class GameModel {
-  constructor(questions) {
+  constructor(questions, name) {
+    this.name = name;
     this.questions = questions;
     this.restart();
   }
   get state() {
     return this._state;
+  }
+  get playerName() {
+    return this._name;
   }
   get lives() {
     return this._state.lives;
@@ -66,6 +70,7 @@ export default class GameModel {
     this._currentAnswer = answerResult;
   }
   restart() {
+    this._name = this.name;
     this._questions = this.questions.slice();
     this._state = Object.assign({}, headerState);
     this._answers = [];

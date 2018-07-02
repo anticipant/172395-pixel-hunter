@@ -18,6 +18,7 @@ export default class GameScreen {
     this.model = model;
     this.restartModal = new RestartModalView();
     this.restartModal.onConfirm = () => {
+      this.removeListener();
       this.stopTimer();
       Router.showGreeting();
     };
@@ -105,23 +106,19 @@ export default class GameScreen {
   }
   showStatsView() {
     this.removeListener();
-    Router.showStats(this.model.answers, this.model.lives, this.model.userResult);
+    Router.showStats(this.model);
   }
   checkAnswer(isCorrect) {
     this.stopTimer();
     this.model.currentAnswer = isCorrect;
     this.model.getAnswers();
-
     this.updateStats();
     if (!isCorrect) {
       this.model.reduceLive();
       this.updateHeader();
-      if (!this.model.lives) {
-        this.showStatsView();
-      }
     }
     this.resetTimer();
-    if (this.model.isStillQuestion()) {
+    if (this.model.isStillQuestion() && this.model.lives) {
       this.showGame();
     } else {
       this.showStatsView();

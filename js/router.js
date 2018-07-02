@@ -5,25 +5,14 @@ import IntroView from './intro-view.js';
 import GreetingView from './greeting-view.js';
 import RulesView from './rules-view.js';
 import ErrorView from './error-view.js';
-import adaptServerData from './data-adapter.js';
+import Loader from './loader.js';
 import changeScreen from './util.js';
 
-const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-};
 let questData;
 export default class Router {
   static loadData() {
-    window.fetch(`https://es.dump.academy/pixel-hunter/questions`).
-    then(checkStatus).
-    then((response) => response.json()).
-    then((data) => {
-      questData = adaptServerData(data);
-    }).
+    Loader.loadData().
+    then((data) => questData = data).
     then(() => Router.showIntro()).
     catch(Router.showError);
   }
@@ -39,13 +28,24 @@ export default class Router {
     const rules = new RulesView();
     changeScreen(rules.element);
   }
-  static showGameScreen(isFirstGame) {
-    const gameScreen = new GameScreen(new GameModel(questData));
+  static showGameScreen(isFirstGame, playerName) {
+    const gameScreen = new GameScreen(new GameModel(questData, playerName));
     gameScreen.showGame(isFirstGame);
   }
-  static showStats(answers, lives, userResult) {
-    const statsModuleView = new StatsModuleView(answers, lives, userResult);
-    changeScreen(statsModuleView.element);
+  static showStats(model) {
+    const resultObject = {
+      answers: model.answers,
+      lives: model.lives,
+      result: model.userResult,
+    };
+    const playerName = model.playerName;
+    Loader.saveResults(resultObject, playerName).
+    then(() => Loader.loadResults(playerName)).
+    then((data) => {
+      const statsModuleView = new StatsModuleView(data);
+      changeScreen(statsModuleView.element);
+    }).
+    catch(Router.showError);
   }
   static showError(err) {
     const errorScreen = new ErrorView(err);
