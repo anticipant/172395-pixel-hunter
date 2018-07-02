@@ -8,6 +8,7 @@ import HeaderLevelView from './header-level-view.js';
 import Footer from './footer-view.js';
 
 const ONE_SECOND = 1000;
+const BLINK_TIME = 5;
 const QuestionType = {
   TWO_OF_TWO: `two-of-two`,
   TINDER_LIKE: `tinder-like`,
@@ -49,6 +50,9 @@ export default class GameScreen {
     this._interval = setTimeout(() => {
       this.model.tick();
       this.updateHeader();
+      if (this.model.time === BLINK_TIME) {
+        this.setBlinkMode(true);
+      }
       if (this.model.time === 0) {
         this.checkAnswer(false);
       }
@@ -111,8 +115,16 @@ export default class GameScreen {
     this.removeListener();
     Router.showStats(this.model);
   }
+  setBlinkMode(mode) {
+    if (mode) {
+      document.querySelector(`.central`).classList.add(`blink`);
+    } else {
+      document.querySelector(`.central`).classList.remove(`blink`);
+    }
+  }
   checkAnswer(isCorrect) {
     this.stopTimer();
+    this.setBlinkMode(false);
     this.model.currentAnswer = isCorrect;
     this.model.getAnswers();
     this.updateStats();
