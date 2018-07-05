@@ -4,7 +4,7 @@ export default class GameViewFirst extends AbstractView {
   constructor(question) {
     super();
     this.question = question;
-    this.numberOfResponses = [];
+    this.enteredAnswers = [];
     this.userAnswers = [];
   }
   render() {
@@ -37,19 +37,19 @@ export default class GameViewFirst extends AbstractView {
     });
   }
   checkCountOfAnswers(clickedAnswerKey, clickedAnswerValue) {
-    if (this.numberOfResponses.indexOf(clickedAnswerKey) < 0) {
+    if (this.enteredAnswers.indexOf(clickedAnswerKey) < 0) {
       this.userAnswers.push({
         answerKey: clickedAnswerKey,
         answerValue: clickedAnswerValue,
       });
-      this.numberOfResponses.push(clickedAnswerKey);
+      this.enteredAnswers.push(clickedAnswerKey);
     } else {
       this.userAnswers = [{
         answerKey: clickedAnswerKey,
         answerValue: clickedAnswerValue,
       }];
     }
-    return this.numberOfResponses.length;
+    return this.enteredAnswers.length;
   }
   checkAnswer(answerKey, answerValue) {
     const minNumberAnswers = 2;

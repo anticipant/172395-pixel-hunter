@@ -1,6 +1,6 @@
 import AbstractView from './abstract-view.js';
 
-export default class Footer extends AbstractView {
+export default class FooterView extends AbstractView {
   constructor() {
     super();
   }

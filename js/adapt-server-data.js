@@ -4,20 +4,20 @@ const UserAnswer = {
 };
 const preprocessAnswers = (answers) => {
   let obj = {};
-  answers.forEach((answersInner, ind) => {
-    obj[`image${ind}`] = {
-      'photo': answersInner.type === `photo` ? UserAnswer.CORRECT : UserAnswer.WRONG,
-      'painting': answersInner.type === `painting` ? UserAnswer.CORRECT : UserAnswer.WRONG,
+  answers.forEach((it, index) => {
+    obj[`image${index}`] = {
+      'photo': it.type === `photo` ? UserAnswer.CORRECT : UserAnswer.WRONG,
+      'painting': it.type === `painting` ? UserAnswer.CORRECT : UserAnswer.WRONG,
     };
   });
   return obj;
 };
 const getImagePathArray = (level) => {
-  return level.answers.map((answersInner) => {
+  return level.answers.map((it) => {
     return {
-      url: answersInner.image.url,
-      width: answersInner.image.width,
-      height: answersInner.image.height,
+      url: it.image.url,
+      width: it.image.width,
+      height: it.image.height,
     };
   });
 };

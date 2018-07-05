@@ -1,12 +1,12 @@
 import GameModel from './game-model.js';
 import StatsModuleView from './stats-module-view.js';
-import GameScreen from './show-game.js';
+import GameScreen from './game-screen.js';
 import IntroView from './intro-view.js';
 import GreetingView from './greeting-view.js';
 import RulesView from './rules-view.js';
 import ErrorView from './error-view.js';
 import Loader from './loader.js';
-import changeScreen from './util.js';
+import changeScreen from './change-screen.js';
 
 let questData;
 export default class Router {

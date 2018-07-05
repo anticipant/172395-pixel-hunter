@@ -1,5 +1,5 @@
-import {Limit} from './get-user-score.js';
-import {getUserResult} from './get-user-score.js';
+import {Limit} from './get-user-result.js';
+import getUserResult from './get-user-result.js';
 
 const headerState = {
   lives: 3,
@@ -11,7 +11,7 @@ const reduceLive = (state) => {
     lives
   });
 };
-const setAnswers = (answerResult, timeResult) => {
+const getAnswersAndTimeResults = (answerResult, timeResult) => {
   let result;
   const timePlayer = Limit.TIME - timeResult;
   if (answerResult) {
@@ -75,8 +75,8 @@ export default class GameModel {
     this._state = Object.assign({}, headerState);
     this._answers = [];
   }
-  getAnswers() {
-    this._answers.push(setAnswers(this._currentAnswer, this._state.time));
+  updateAnswersData() {
+    this._answers.push(getAnswersAndTimeResults(this._currentAnswer, this._state.time));
   }
   reduceLive() {
     this._state = reduceLive(this._state);
