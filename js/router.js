@@ -30,9 +30,9 @@ export default class Router {
     const rules = new RulesView();
     changeScreen(rules.element);
   }
-  static showGameScreen(isFirstGame, playerName) {
+  static showGameScreen(playerName) {
     const gameScreen = new GameScreen(new GameModel(questData, playerName));
-    gameScreen.showGame(isFirstGame);
+    gameScreen.initGame();
   }
   static showStats(model) {
     const resultObject = {

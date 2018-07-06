@@ -132,16 +132,10 @@ export default class GameScreen {
     }
     this.resetTimer();
     if (this.model.isStillQuestion() && this.model.lives >= 0) {
-      this.showGame();
+      this.updateGame();
     } else {
       this.showStatsView();
     }
-  }
-  refreshData(isFirstGame) {
-    if (isFirstGame) {
-      this.model.restart();
-    }
-    this.model.getActualQuestion();
   }
   addListener() {
     document.addEventListener(`click`, this.onButtonBackClick);
@@ -149,16 +143,18 @@ export default class GameScreen {
   removeListener() {
     document.removeEventListener(`click`, this.onButtonBackClick);
   }
-  showGame(isFirstGame) {
-    this.refreshData(isFirstGame);
-    if (isFirstGame) {
-      this.getGameBody();
-      this.getHeader();
-      this.getStats();
-    } else {
-      this.updateGameBody();
-      this.updateHeader();
-    }
+  updateGame() {
+    this.model.getActualQuestion();
+    this.updateGameBody();
+    this.updateHeader();
+    this.startTimer();
+  }
+  initGame() {
+    this.model.restart();
+    this.model.getActualQuestion();
+    this.getGameBody();
+    this.getHeader();
+    this.getStats();
     this.startTimer();
   }
 }
