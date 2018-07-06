@@ -11,7 +11,7 @@ const reduceLive = (state) => {
     lives
   });
 };
-const getAnswersAndTimeResults = (answerResult, timeResult) => {
+const generateAnswerObj = (answerResult, timeResult) => {
   let result;
   const timePlayer = Limit.TIME - timeResult;
   if (answerResult) {
@@ -66,17 +66,15 @@ export default class GameModel {
   get userResult() {
     return getUserResult(this._answers, this._state.lives);
   }
-  set currentAnswer(answerResult) {
+  addAnswer(answerResult) {
     this._currentAnswer = answerResult;
+    this._answers.push(generateAnswerObj(this._currentAnswer, this._state.time));
   }
   restart() {
     this._name = this.name;
     this._questions = this.questions.slice();
     this._state = Object.assign({}, headerState);
     this._answers = [];
-  }
-  updateAnswersData() {
-    this._answers.push(getAnswersAndTimeResults(this._currentAnswer, this._state.time));
   }
   reduceLive() {
     this._state = reduceLive(this._state);

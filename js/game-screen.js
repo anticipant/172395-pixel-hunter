@@ -122,8 +122,7 @@ export default class GameScreen {
   checkAnswer(isCorrect) {
     this.stopTimer();
     this.setBlinkMode(false);
-    this.model.currentAnswer = isCorrect;
-    this.model.updateAnswersData();
+    this.model.addAnswer(isCorrect);
     this.updateStats();
     if (!isCorrect) {
       this.model.reduceLive();
