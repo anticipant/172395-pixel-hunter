@@ -1,13 +1,9 @@
-const UserAnswer = {
-  CORRECT: true,
-  WRONG: false,
-};
 const preprocessAnswers = (answers) => {
   let obj = {};
   answers.forEach((it, index) => {
     obj[`image${index}`] = {
-      'photo': it.type === `photo` ? UserAnswer.CORRECT : UserAnswer.WRONG,
-      'painting': it.type === `painting` ? UserAnswer.CORRECT : UserAnswer.WRONG,
+      'photo': it.type === `photo`,
+      'painting': it.type === `painting`,
     };
   });
   return obj;
