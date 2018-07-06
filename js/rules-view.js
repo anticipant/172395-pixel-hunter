@@ -6,7 +6,8 @@ export default class RulesView extends AbstractVIew {
     super();
   }
   render() {
-    return `<header class="header">
+    return `
+  <header class="header">
     <div class="header__back">
       <button class="back">
         <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
@@ -38,7 +39,7 @@ export default class RulesView extends AbstractVIew {
       buttonElement.disabled = !(evt.target.value.length > 0);
     });
     rulesInputElement.addEventListener(`change`, (evt) => {
-      userName = evt.target.value;
+      userName = evt.target.value.trim();
     });
     const buttonElement = this.element.querySelector(`.rules__button`);
 

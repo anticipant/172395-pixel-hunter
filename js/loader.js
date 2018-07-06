@@ -1,4 +1,4 @@
-import adaptServerData from './data-adapter.js';
+import adaptServerData from './adapt-server-data.js';
 
 const ServerUrl = {
   QUESTIONS: `https://es.dump.academy/pixel-hunter/questions`,

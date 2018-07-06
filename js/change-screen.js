@@ -1,7 +1,7 @@
-import Footer from './footer-view.js';
+import FooterView from './footer-view.js';
 
-const footer = new Footer();
-export const changeScreen = (element) => {
+const footer = new FooterView();
+const changeScreen = (element) => {
   const mainElement = document.querySelector(`.central`);
   mainElement.innerHTML = ``;
   mainElement.appendChild(element);

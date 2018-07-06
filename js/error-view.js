@@ -1,17 +1,19 @@
 import AbstractView from './abstract-view.js';
 
-export default class ErrorVIew extends AbstractView {
+export default class ErrorView extends AbstractView {
   constructor(error) {
     super();
     this.error = error;
   }
   render() {
-    return `<section class="modal-error modal-error__wrap">
-    <div class="modal-error__inner">
-      <h2 class="modal-error__title">Произошла ошибка!</h2>
-      <p class="modal-error__text">${this.error.message}</p>
-    </div>
-  </section>`;
+    return `
+<section class="modal-error modal-error__wrap">
+	<div class="modal-error__inner">
+		<h2 class="modal-error__title">Произошла ошибка!</h2>
+		<p class="modal-error__text">${this.error.message}</p>
+	</div>
+</section>
+`;
   }
   bind() {}
   get element() {

@@ -1,11 +1,11 @@
 import Router from './router.js';
 import RestartModalView from './restart-modal-view.js';
-import GameViewFirst from './game-view-1.js';
-import GameViewSecond from './game-view-2.js';
-import GameViewThird from './game-view-3.js';
+import GameViewFirst from './game-view-first.js';
+import GameViewSecond from './game-view-second.js';
+import GameViewThird from './game-view-third.js';
 import StatsLevelView from './stats-level-view.js';
 import HeaderLevelView from './header-level-view.js';
-import Footer from './footer-view.js';
+import FooterView from './footer-view.js';
 
 const ONE_SECOND = 1000;
 const BLINK_TIME = 5;
@@ -102,7 +102,7 @@ export default class GameScreen {
     this.level = gameBody;
   }
   getGameBody() {
-    const footer = new Footer();
+    const footer = new FooterView();
     const mainElement = document.querySelector(`.central`);
     this.level = this.getGameModeView(this.model.currentActualQuestion.type);
     this.level.onAnswer = (isCorrectAnswers) => {
@@ -117,17 +117,12 @@ export default class GameScreen {
     Router.showStats(this.model);
   }
   setBlinkMode(mode) {
-    if (mode) {
-      document.querySelector(`.central`).classList.add(`blink`);
-    } else {
-      document.querySelector(`.central`).classList.remove(`blink`);
-    }
+    document.querySelector(`.central`).classList.toggle(`blink`, mode);
   }
   checkAnswer(isCorrect) {
     this.stopTimer();
     this.setBlinkMode(false);
-    this.model.currentAnswer = isCorrect;
-    this.model.getAnswers();
+    this.model.addAnswer(isCorrect);
     this.updateStats();
     if (!isCorrect) {
       this.model.reduceLive();

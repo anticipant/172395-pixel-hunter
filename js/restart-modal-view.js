@@ -17,18 +17,24 @@ export default class RestartModalView extends AbstractView {
     </form>`;
   }
   onConfirm() {}
+  hideModal(evt) {
+    evt.preventDefault();
+    this.element.remove();
+  }
   bind() {
-    const confirmModalTriggerElement = this.element.querySelector(`.modal-confirm__btn--confirm`);
-    confirmModalTriggerElement.addEventListener(`click`, (evt) => {
-      evt.preventDefault();
+    const confirmModalElement = this.element.querySelector(`.modal-confirm__btn--confirm`);
+    const closeModalElement = this.element.querySelector(`.modal-confirm__close`);
+    const cancelModalElement = this.element.querySelector(`.modal-confirm__btn--cancel`);
+
+    confirmModalElement.addEventListener(`click`, (evt) => {
+      this.hideModal(evt);
       this.onConfirm();
-      this.element.remove();
     });
-    document.addEventListener(`click`, (evt) => {
-      if (evt.target.closest(`.modal-confirm__close`) || evt.target.closest(`.modal-confirm__btn--cancel`)) {
-        evt.preventDefault();
-        this.element.remove();
-      }
+    cancelModalElement.addEventListener(`click`, (evt) => {
+      this.hideModal(evt);
+    });
+    closeModalElement.addEventListener(`click`, (evt) => {
+      this.hideModal(evt);
     });
   }
   get element() {
