@@ -39,7 +39,7 @@ export default class RulesView extends AbstractVIew {
       buttonElement.disabled = !(evt.target.value.length > 0);
     });
     rulesInputElement.addEventListener(`change`, (evt) => {
-      userName = evt.target.value;
+      userName = encodeURIComponent(evt.target.value);
     });
     const buttonElement = this.element.querySelector(`.rules__button`);
 
