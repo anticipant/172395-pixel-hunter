@@ -1,6 +1,6 @@
 const UserAnswer = {
-  CORRECT: 1,
-  WRONG: 0,
+  CORRECT: true,
+  WRONG: false,
 };
 const preprocessAnswers = (answers) => {
   let obj = {};
